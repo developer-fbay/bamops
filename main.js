@@ -8,11 +8,11 @@ const svgEl = (n, a = {}) => { const e = document.createElementNS('http://www.w3
 
 /* ---------- systems ---------- */
 const SYSTEMS = [
-  { name: 'Brain', host: 'brain.fundingbay.co.uk', url: 'https://brain.fundingbay.co.uk', note: 'deal os. it thinks.', tag: 'vue · supabase', sch: 'app', q: 'named accurately' },
-  { name: 'Compare My Funding', host: 'comparemyfunding.co.uk', url: 'https://comparemyfunding.co.uk/compare-busniess-loans/', note: '95% right, 100% certain.', tag: '30+ sources', sch: 'form', q: 'the other 5% are character-building' },
-  { name: 'Partner Portal', host: 'partners.fbxcapital.co.uk', url: 'https://partners.fbxcapital.co.uk', note: 'introducers. CSV is an API.', tag: 'vue · supabase', sch: 'portal', q: 'everyone insisted' },
-  { name: 'GTM Suite', host: 'gtm-suite-demo', url: '../gtm-suite-demo/index.html', note: '5.6m companies, one laptop.', tag: 'companies house', sch: 'grid', q: 'the laptop is fine, thank you for asking' },
-  { name: 'Room Booking', host: 'booking.coworkcapetown.com', url: 'https://booking.coworkcapetown.com', note: 'rooms. the 3pm slot is gone.', tag: 'n8n · calendar', sch: 'cal', q: 'it was gone before you read this' },
+  { name: 'Brain', sector: 'finance · deal management', note: 'deal os. it thinks.', tag: 'vue · supabase', sch: 'app', q: 'named accurately' },
+  { name: 'Comparison Engine', sector: 'fintech · lead gen', note: '95% right, 100% certain.', tag: '30+ sources', sch: 'form', q: 'the other 5% are character-building' },
+  { name: 'Partner Portal', sector: 'b2b · introducers', note: 'introducers. CSV is an API.', tag: 'vue · supabase', sch: 'portal', q: 'everyone insisted' },
+  { name: 'GTM Suite', sector: 'sales · data', note: '5.6m companies, one laptop.', tag: 'companies house', sch: 'grid', q: 'the laptop is fine, thank you for asking' },
+  { name: 'Room Booking', sector: 'property · coworking', note: 'rooms. the 3pm slot is gone.', tag: 'n8n · calendar', sch: 'cal', q: 'it was gone before you read this' },
 ];
 
 const SCH = {
@@ -56,21 +56,21 @@ const SCH = {
     <rect class="sch-f" x="96" y="150" width="34" height="24" rx="4"/>`,
 };
 
-const ARW = '<svg class="arw" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M4 12 12 4M6 4h6v6"/></svg>';
+const caseId = (i) => `case_${String(i + 1).padStart(2, '0')}.redacted`;
 
 $('#sys-count').textContent = String(SYSTEMS.length).padStart(2, '0');
 $('#sys-list').innerHTML = SYSTEMS.map((s, i) => `<li>
-  <a class="row" href="${s.url}" target="_blank" rel="noopener" data-i="${i}" title="${s.q}">
+  <div class="row" tabindex="0" data-i="${i}" title="${s.q}">
     <span class="i">${String(i + 1).padStart(2, '0')}</span>
-    <span class="t"><b>${s.name}</b><span>${s.host} — ${s.note}</span></span>
-    <span class="r"><span class="tag">${s.tag}</span>${ARW}</span>
-  </a></li>`).join('');
+    <span class="t"><b>${s.name}</b><span>${s.sector} — ${s.note}</span></span>
+    <span class="r"><span class="tag">${s.tag}</span></span>
+  </div></li>`).join('');
 
 const prevBody = $('#prev-body');
 prevBody.innerHTML = SYSTEMS.map((s, i) => `<svg viewBox="0 0 312 188" data-i="${i}" class="${i ? '' : 'on'}" aria-hidden="true">${SCH[s.sch]}</svg>`).join('');
 const prevName = $('#prev-name');
 const prevSvgs = [...prevBody.children];
-prevName.textContent = SYSTEMS[0].host;
+prevName.textContent = caseId(0);
 
 const PREV_DEFAULT = 0;
 let prevI = PREV_DEFAULT;
@@ -78,7 +78,7 @@ let prevI = PREV_DEFAULT;
 function showPrev(i) {
   if (i === prevI) return;
   prevI = i;
-  prevName.textContent = SYSTEMS[i].host;
+  prevName.textContent = caseId(i);
   prevSvgs.forEach((el, k) => el.classList.toggle('on', k === i));
   if (!MOTION) return;
   // Inline opacity is the single source of truth here: a running tween would
@@ -525,28 +525,30 @@ function cmdHelp() {
 }
 
 function cmdSystems() {
-  const hostW = Math.max(...SYSTEMS.map((s) => s.host.length));
+  const nameW = Math.max(...SYSTEMS.map((s) => s.name.length));
   const tagW = Math.max(...SYSTEMS.map((s) => s.tag.length));
   const stacked = window.innerWidth < 760;
   SYSTEMS.forEach((s, i) => {
     const n = String(i + 1).padStart(2, '0');
     if (stacked) {
-      write(`<em>${n}</em>  ${esc(s.host)}`);
+      write(`<em>${n}</em>  ${esc(s.name)}`);
       write(`    <i>${esc(s.note)}</i>`);
     } else {
-      write(`<em>${n}</em>  ${esc(s.host.padEnd(hostW))}  <i>${esc(s.tag.padEnd(tagW))}</i>  ${esc(s.note)}`);
+      write(`<em>${n}</em>  ${esc(s.name.padEnd(nameW))}  <i>${esc(s.tag.padEnd(tagW))}</i>  ${esc(s.note)}`);
     }
   });
   write('');
-  write('  <i>open <em>open 1</em> or <em>open brain</em>.</i>');
+  write('  <i>try <em>open 1</em> or <em>open brain</em>.</i>');
   write('');
 }
 
 function cmdOpen(arg) {
-  const s = byIndexOrName(SYSTEMS, arg, 'name', 'host');
+  const s = byIndexOrName(SYSTEMS, arg, 'name', 'sector');
   if (!s) { write(`  <i>${arg ? esc(arg) + ': no such system.' : 'open what? try <em>systems</em>.'}</i>`); return; }
-  write(`  <i>opening</i> ${esc(s.host)}`);
-  window.open(s.url, '_blank', 'noopener');
+  write(`  <b>${esc(s.name)}</b> <i>· ${esc(s.sector)}</i>`);
+  write(`  ${esc(s.note)}`);
+  write(`  <i>link: ████████████ · nice try. ask nicely: <em>contact</em></i>`);
+  write('');
 }
 
 function cmdFlows() {
@@ -734,7 +736,7 @@ function buildDoc() {
     } else {
       row(...head, [spread(7 + s.name.length, s.tag.length), ''], [s.tag, MUT]);
     }
-    row(['       ' + s.host, MUT]);
+    row(['       ' + s.sector, MUT]);
     indent('       ', s.note, '', W - 7);
     gap();
   });
@@ -856,7 +858,7 @@ const CMDS = {
   help: { about: 'this list', run: cmdHelp },
   replay: { about: 'type the site out again', run: replay },
   systems: { about: 'what we run', run: cmdSystems },
-  open: { use: 'open <n|name>', about: 'launch one in a new tab', run: cmdOpen },
+  open: { use: 'open <n|name>', about: 'peek at one (no links, sorry)', run: cmdOpen },
   flows: { about: 'the automations', run: cmdFlows },
   run: { use: 'run <n|id>', about: 'step one through', run: cmdRun },
   about: { about: 'the short version', run: cmdAbout },

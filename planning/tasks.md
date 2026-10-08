@@ -14,8 +14,10 @@ Tick off as we go.
       Quick, visible win; everything after builds on it.
 - [x] **T2. Split the file** — move CSS and JS out of `index.html` into
       `styles.css` / `main.js`. Easier to work on as the site grows.
-- [ ] **T3. Remove live links & hostnames** from the systems list (the
-      "tease, don't tell" rule).
+- [x] **T3. Remove live links & hostnames** from the systems list (the
+      "tease, don't tell" rule). Footer links to fbxcapital.co.uk /
+      fundingbay.co.uk kept until the "can we name clients?" question is
+      answered.
 
 ## Phase 2 — New sections
 - [ ] **T4. New hero** — external pitch copy, primary/secondary pill CTAs,
