@@ -25,6 +25,10 @@ Tick off as we go.
 - [x] **T5. Case files** — replace the systems list + preview with case-file
       cards (Problem / Fix / Result, redacted preview, cheeky footnote).
       Terminal `systems` is now `cases` (old name kept as an alias).
+      Layout: project list on the left, write-up card on the side (hover to
+      preview, click to pin). On narrow screens the write-ups sit inline.
+- [ ] **T5b. A/B testing project** — replace placeholder copy with real
+      details (GTM project removed).
 - [x] **T6. Redaction component** — `redact(width, label)` in `main.js`: an
       empty bar sized in `ch`, `title="nice try"`, `aria-label` for screen
       readers. Used for client names; reuse it for anything else.

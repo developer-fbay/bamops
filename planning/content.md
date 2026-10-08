@@ -61,12 +61,16 @@ sign-off — see open questions in `brief.md`).
 - Result: Fewer "just following up" emails. Possibly zero.
 - Footnote: "CSV is an API. Everyone insisted."
 
-### case_04 — "Go-to-market engine"
-- Sector: sales · data
-- Problem: Sales were buying stale lead lists and emailing the void.
-- Fix: Every UK company, segmented, enriched and verified in-house.
-- Result: 5.6m companies. One laptop.
-- Footnote: "The laptop is fine, thank you for asking."
+### case_04 — "A/B Testing" (PLACEHOLDER — real details to come from Jesse)
+- Sector: growth · experimentation
+- Problem: Decisions were made by whoever spoke loudest in the meeting.
+- Fix: A testing setup that splits traffic, tracks what matters and calls a
+  winner.
+- Result: Opinions are now optional.
+- Footnote: "Variant B. It's always variant B."
+
+> The GTM / go-to-market project was removed (and its `gtm.outbound`
+> automation demo with it).
 
 ### case_05 — "Room booking"
 - Sector: property · coworking
@@ -98,8 +102,8 @@ sign-off — see open questions in `brief.md`).
 
 ## 5. Automation
 
-Keep the existing flows (`enquiry.intake`, `lender.match`, `gtm.outbound`,
-`booking.ops`, `friday.deploy`). Recolour to monochrome. `friday.deploy` stays
+Keep the existing flows (`enquiry.intake`, `lender.match`, `booking.ops`,
+`friday.deploy`). Recolour to monochrome. `friday.deploy` stays
 — it's the best joke on the site.
 
 ## 6. Contact
