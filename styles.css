@@ -19,7 +19,7 @@ body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
   background-size:76px 76px;
   -webkit-mask-image:radial-gradient(130% 80% at 50% 0%,#000 25%,transparent 85%);
   mask-image:radial-gradient(130% 80% at 50% 0%,#000 25%,transparent 85%)}
-h1,h2,p,ol,ul,figure{margin:0;padding:0}
+h1,h2,h3,p,ol,ul,dl,figure{margin:0;padding:0}
 ol,ul{list-style:none}
 a{color:inherit;text-decoration:none}
 :focus-visible{outline:1px solid var(--acc);outline-offset:3px}
@@ -63,27 +63,47 @@ section{padding-block:clamp(60px,9vh,104px)}
 .head h2{font:400 clamp(19px,2.2vw,24px) var(--sans);letter-spacing:-.02em}
 .head .meta{margin-left:auto;font:400 11px var(--mono);color:var(--fg-3)}
 
-/* systems */
-.sys{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:clamp(28px,5vw,64px);align-items:start}
-.row{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:18px;align-items:center;
-  padding:19px 10px 19px 2px;border-top:1px solid var(--line);position:relative;transition:background .25s}
-.sys-list li:last-child .row{border-bottom:1px solid var(--line)}
-.row::after{content:"";position:absolute;left:0;right:0;top:-1px;height:1px;background:var(--acc);transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.22,1,.36,1)}
-.row:hover,.row:focus-visible{background:rgba(255,255,255,.015)}
-.row:hover::after,.row:focus-visible::after{transform:scaleX(1)}
-.row .i{font:400 11px var(--mono);color:var(--fg-3)}
-.row .t{min-width:0}
-.row .t b{display:block;font:500 16px var(--sans);letter-spacing:-.015em;color:#f1f1f2}
-.row .t span{display:block;margin-top:4px;font:400 11.5px/1.5 var(--mono);color:var(--fg-3)}
-.row .r{display:flex;align-items:center;gap:14px}
+/* case files */
+.cases-intro{max-width:52ch;margin:-8px 0 28px;color:var(--fg-2)}
+.cases{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.case{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:12px;background:var(--panel);
+  overflow:hidden;transition:border-color .3s,background .3s}
+.case:hover{border-color:var(--line-2);background:var(--panel-2)}
+.case-top{display:flex;align-items:center;gap:6px;padding:11px 14px;border-bottom:1px solid var(--line);
+  font:400 11px var(--mono);color:var(--fg-3)}
+.case-top i{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.13);display:block}
+.case-top span:first-of-type{margin-left:6px;color:var(--fg-2)}
+.case-top span:last-child{margin-left:auto}
+.case-prev{position:relative;height:190px;border-bottom:1px solid var(--line);overflow:hidden;
+  background:repeating-linear-gradient(135deg,transparent 0 9px,rgba(255,255,255,.012) 9px 18px)}
+.case-prev svg{position:absolute;inset:0;width:100%;height:100%;padding:16px;filter:blur(2.2px);opacity:.75;
+  transition:filter .5s,opacity .5s}
+.case:hover .case-prev svg{filter:blur(.8px);opacity:1}
+.stamp{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-6deg);
+  font:500 11px var(--mono);letter-spacing:.24em;text-transform:uppercase;color:var(--fg-2);
+  border:1px solid var(--line-2);border-radius:4px;padding:5px 10px;background:rgba(0,0,0,.6);backdrop-filter:blur(4px)}
+.case-body{display:flex;flex-direction:column;flex:1;padding:20px 20px 18px}
+.case h3{font:500 20px var(--sans);letter-spacing:-.02em;color:var(--fg)}
+.case .client{margin-top:6px;font:400 11.5px var(--mono);color:var(--fg-3)}
+.case dl{display:grid;gap:12px;margin:18px 0 20px}
+.case dt{font:500 10px/1 var(--mono);letter-spacing:.11em;text-transform:uppercase;color:var(--fg-3)}
+.case dd{margin:5px 0 0;font-size:14px;line-height:1.55;color:var(--fg-2)}
+.case .res dd{color:var(--fg)}
+.case-foot{display:flex;align-items:center;gap:12px;margin-top:auto;padding-top:14px;border-top:1px solid var(--line)}
+.quip{margin-left:auto;font:400 11.5px var(--mono);color:var(--fg-3);font-style:italic;text-align:right}
+@media (hover:hover){
+  .quip{opacity:0;transform:translateY(3px);transition:opacity .3s,transform .3s}
+  .case:hover .quip,.case:focus-within .quip{opacity:1;transform:none}
+}
+.cases .case:last-child:nth-child(odd){grid-column:1/-1}
+@media (min-width:761px){
+  .cases .case:last-child:nth-child(odd){display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:auto 1fr}
+  .cases .case:last-child:nth-child(odd) .case-top{grid-column:1/-1}
+  .cases .case:last-child:nth-child(odd) .case-prev{height:auto;min-height:190px;border-bottom:0;border-right:1px solid var(--line)}
+}
 .tag{font:400 11px var(--mono);color:var(--fg-2);padding:2px 8px;border:1px solid var(--line);border-radius:99px;white-space:nowrap}
-.prev{position:sticky;top:34px;border:1px solid var(--line);border-radius:10px;background:var(--panel);overflow:hidden}
-.prev-top{display:flex;align-items:center;gap:6px;padding:11px 13px;border-bottom:1px solid var(--line)}
-.prev-top i{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.13);display:block}
-.prev-top b{margin-left:6px;font:400 11px var(--mono);color:var(--fg-3);font-weight:400}
-.prev-body{position:relative;height:216px}
-.prev-body svg{position:absolute;inset:0;width:100%;height:100%;opacity:0;padding:14px}
-.prev-body svg.on{opacity:1}
+/* blacked-out text: an empty bar sized in ch, so the real words never ship */
+.redact{display:inline-block;height:1em;background:var(--redact);border-radius:2px;cursor:help;vertical-align:-.15em}
 .sch{fill:none;stroke:var(--line-2);stroke-width:1}
 .sch-f{fill:rgba(255,255,255,.045);stroke:none}
 .sch-a{fill:rgba(255,255,255,.32);stroke:none}
@@ -181,19 +201,18 @@ body.term-on :focus-visible{outline-color:var(--g-br)}
 .rv{opacity:0}
 /* The not-yet-typed tail of a line. It keeps its space so nothing reflows and stays in the
    accessibility tree, unlike hiding it. Overrides are blunt on purpose: this wrapper lands
-   inside selectors like .row .t span, which would otherwise restyle it. */
+   inside selectors like .case dd, which would otherwise restyle it. */
 .rest{display:inline!important;margin:0!important;font:inherit!important;color:transparent!important}
 .jk{cursor:help;border-bottom:1px dotted rgba(255,255,255,.2);transition:color .2s,border-color .2s}
 .jk:hover{color:var(--acc);border-color:var(--acc)}
 
 @media (max-width:980px){
-  .sys{grid-template-columns:minmax(0,1fr)}
-  .prev{display:none}
   .rail{display:none}
 }
+@media (max-width:760px){
+  .cases{grid-template-columns:minmax(0,1fr)}
+}
 @media (max-width:620px){
-  .row{grid-template-columns:22px minmax(0,1fr);gap:12px}
-  .row .r{grid-column:2;margin-top:10px}
   /* Two lines held open: the longest headline wraps here and the rest do not. */
   .hero h1{max-width:none;min-height:2.04em}
 }

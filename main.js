@@ -6,13 +6,35 @@ const MOTION = !!G && !REDUCED;
 const $ = (s) => document.querySelector(s);
 const svgEl = (n, a = {}) => { const e = document.createElementNS('http://www.w3.org/2000/svg', n); for (const k in a) e.setAttribute(k, a[k]); return e; };
 
-/* ---------- systems ---------- */
-const SYSTEMS = [
-  { name: 'Brain', sector: 'finance · deal management', note: 'deal os. it thinks.', tag: 'vue · supabase', sch: 'app', q: 'named accurately' },
-  { name: 'Comparison Engine', sector: 'fintech · lead gen', note: '95% right, 100% certain.', tag: '30+ sources', sch: 'form', q: 'the other 5% are character-building' },
-  { name: 'Partner Portal', sector: 'b2b · introducers', note: 'introducers. CSV is an API.', tag: 'vue · supabase', sch: 'portal', q: 'everyone insisted' },
-  { name: 'GTM Suite', sector: 'sales · data', note: '5.6m companies, one laptop.', tag: 'companies house', sch: 'grid', q: 'the laptop is fine, thank you for asking' },
-  { name: 'Room Booking', sector: 'property · coworking', note: 'rooms. the 3pm slot is gone.', tag: 'n8n · calendar', sch: 'cal', q: 'it was gone before you read this' },
+/* ---------- case files ---------- */
+// No client names, URLs or screenshots in here. `client` is only the width of the
+// redaction bar in characters, so the real name never reaches the page source.
+const CASES = [
+  { name: 'The Brain', sector: 'finance · deal management', tag: 'vue · supabase', sch: 'app', client: 11,
+    problem: 'Deals lived in inboxes, spreadsheets and one person\'s memory. When that person went on holiday, so did the pipeline.',
+    fix: 'One operating system for every deal, intake to payout. It remembers everything and nags people politely.',
+    result: 'One source of truth. Holidays are allowed again.',
+    quip: 'Named accurately.' },
+  { name: 'Comparison Engine', sector: 'fintech · lead gen', tag: '30+ sources', sch: 'form', client: 9,
+    problem: 'Matching a business to the right funder meant hours of phone calls and a lot of gut feel.',
+    fix: 'An engine that cross-checks 30+ sources and returns a shortlist in seconds.',
+    result: '95% right, 100% certain.',
+    quip: 'The other 5% are character-building.' },
+  { name: 'Partner Portal', sector: 'b2b · introducers', tag: 'vue · supabase', sch: 'portal', client: 8,
+    problem: 'Referrals arrived by email, WhatsApp and occasionally carrier pigeon. Nobody knew who was owed what.',
+    fix: 'A portal where partners submit, track and get paid without chasing anyone.',
+    result: 'Fewer "just following up" emails. Possibly zero.',
+    quip: 'CSV is an API. Everyone insisted.' },
+  { name: 'GTM Engine', sector: 'sales · data', tag: 'companies house', sch: 'grid', client: 10,
+    problem: 'Sales were buying stale lead lists and emailing the void.',
+    fix: 'Every UK company, segmented, enriched and verified in-house.',
+    result: '5.6m companies. One laptop.',
+    quip: 'The laptop is fine, thank you for asking.' },
+  { name: 'Room Booking', sector: 'property · coworking', tag: 'n8n · calendar', sch: 'cal', client: 12,
+    problem: 'Meeting rooms double-booked, invoices forgotten, doors locked on the wrong people.',
+    fix: 'Booking, confirmations, door access and invoicing in one flow.',
+    result: 'Nobody fights over the 3pm slot any more. It\'s just gone.',
+    quip: 'It was gone before you read this.' },
 ];
 
 const SCH = {
@@ -56,48 +78,27 @@ const SCH = {
     <rect class="sch-f" x="96" y="150" width="34" height="24" rx="4"/>`,
 };
 
-const caseId = (i) => `case_${String(i + 1).padStart(2, '0')}.redacted`;
+const caseNo = (i) => `case_${String(i + 1).padStart(2, '0')}`;
+const redact = (len, label) =>
+  `<span class="redact" role="img" aria-label="${label}" title="nice try" style="width:${len}ch"></span>`;
 
-$('#sys-count').textContent = String(SYSTEMS.length).padStart(2, '0');
-$('#sys-list').innerHTML = SYSTEMS.map((s, i) => `<li>
-  <div class="row" tabindex="0" data-i="${i}" title="${s.q}">
-    <span class="i">${String(i + 1).padStart(2, '0')}</span>
-    <span class="t"><b>${s.name}</b><span>${s.sector} — ${s.note}</span></span>
-    <span class="r"><span class="tag">${s.tag}</span></span>
-  </div></li>`).join('');
-
-const prevBody = $('#prev-body');
-prevBody.innerHTML = SYSTEMS.map((s, i) => `<svg viewBox="0 0 312 188" data-i="${i}" class="${i ? '' : 'on'}" aria-hidden="true">${SCH[s.sch]}</svg>`).join('');
-const prevName = $('#prev-name');
-const prevSvgs = [...prevBody.children];
-prevName.textContent = caseId(0);
-
-const PREV_DEFAULT = 0;
-let prevI = PREV_DEFAULT;
-
-function showPrev(i) {
-  if (i === prevI) return;
-  prevI = i;
-  prevName.textContent = caseId(i);
-  prevSvgs.forEach((el, k) => el.classList.toggle('on', k === i));
-  if (!MOTION) return;
-  // Inline opacity is the single source of truth here: a running tween would
-  // otherwise keep writing the outgoing panel back up over the incoming one.
-  G.killTweensOf(prevSvgs);
-  prevSvgs.forEach((el, k) => { if (k !== i) G.set(el, { opacity: 0, y: 0 }); });
-  G.fromTo(prevSvgs[i], { y: 8, opacity: 0 }, { y: 0, opacity: 1, duration: .3, ease: 'power2.out', overwrite: 'auto' });
-}
-
-const sysList = $('#sys-list');
-sysList.querySelectorAll('.row').forEach((r) => {
-  const i = +r.dataset.i;
-  r.addEventListener('mouseenter', () => showPrev(i));
-  r.addEventListener('focus', () => showPrev(i));
-});
-sysList.addEventListener('mouseleave', () => showPrev(PREV_DEFAULT));
-sysList.addEventListener('focusout', (e) => {
-  if (!sysList.contains(e.relatedTarget)) showPrev(PREV_DEFAULT);
-});
+$('#case-count').textContent = String(CASES.length).padStart(2, '0');
+$('#cases').innerHTML = CASES.map((c, i) => `<article class="case rv">
+  <div class="case-top"><i></i><i></i><i></i><span>${caseNo(i)}</span><span>${c.sector}</span></div>
+  <div class="case-prev" aria-hidden="true">
+    <svg viewBox="0 0 312 188">${SCH[c.sch]}</svg><span class="stamp">redacted</span>
+  </div>
+  <div class="case-body">
+    <h3>${c.name}</h3>
+    <p class="client">client: ${redact(c.client, 'Client name redacted')}</p>
+    <dl>
+      <div><dt>Problem</dt><dd>${c.problem}</dd></div>
+      <div><dt>Fix</dt><dd>${c.fix}</dd></div>
+      <div class="res"><dt>Result</dt><dd>${c.result}</dd></div>
+    </dl>
+    <div class="case-foot"><span class="tag">${c.tag}</span><span class="quip">${c.quip}</span></div>
+  </div>
+</article>`).join('');
 
 /* ---------- workflows ---------- */
 const IC = {
@@ -380,7 +381,7 @@ function startHeadline(delay) {
 const TYPED = [
   '.hero p', '#type', '.stack span',
   '.head .n', '.head h2', '.head .meta',
-  '.row .i', '.row .t b', '.row .t span', '.row .tag',
+  '.cases-intro', '.case-top span', '.case h3', '.case dt', '.case dd', '.case .tag',
   '.tabs button', '.contact p', '.contact a.mail',
   'footer span', 'footer a',
 ].join(',');
@@ -450,7 +451,7 @@ if (MOTION) {
 /* ---------- scroll rail ---------- */
 const MARKS = [
   { id: 'intro', label: 'index' },
-  { id: 'systems', label: 'systems' },
+  { id: 'systems', label: 'case files' },
   { id: 'automation', label: 'automation' },
   { id: 'contact', label: 'contact' },
 ];
@@ -524,17 +525,17 @@ function cmdHelp() {
   write('');
 }
 
-function cmdSystems() {
-  const nameW = Math.max(...SYSTEMS.map((s) => s.name.length));
-  const tagW = Math.max(...SYSTEMS.map((s) => s.tag.length));
+function cmdCases() {
+  const nameW = Math.max(...CASES.map((c) => c.name.length));
+  const secW = Math.max(...CASES.map((c) => c.sector.length));
   const stacked = window.innerWidth < 760;
-  SYSTEMS.forEach((s, i) => {
+  CASES.forEach((c, i) => {
     const n = String(i + 1).padStart(2, '0');
     if (stacked) {
-      write(`<em>${n}</em>  ${esc(s.name)}`);
-      write(`    <i>${esc(s.note)}</i>`);
+      write(`<em>${n}</em>  ${esc(c.name)}`);
+      write(`    <i>${esc(c.sector)}</i>`);
     } else {
-      write(`<em>${n}</em>  ${esc(s.name.padEnd(nameW))}  <i>${esc(s.tag.padEnd(tagW))}</i>  ${esc(s.note)}`);
+      write(`<em>${n}</em>  ${esc(c.name.padEnd(nameW))}  <i>${esc(c.sector.padEnd(secW))}</i>`);
     }
   });
   write('');
@@ -543,11 +544,18 @@ function cmdSystems() {
 }
 
 function cmdOpen(arg) {
-  const s = byIndexOrName(SYSTEMS, arg, 'name', 'sector');
-  if (!s) { write(`  <i>${arg ? esc(arg) + ': no such system.' : 'open what? try <em>systems</em>.'}</i>`); return; }
-  write(`  <b>${esc(s.name)}</b> <i>· ${esc(s.sector)}</i>`);
-  write(`  ${esc(s.note)}`);
-  write(`  <i>link: ████████████ · nice try. ask nicely: <em>contact</em></i>`);
+  const c = byIndexOrName(CASES, arg, 'name', 'sector');
+  if (!c) { write(`  <i>${arg ? esc(arg) + ': no such case.' : 'open what? try <em>cases</em>.'}</i>`); return; }
+  const w = termCols() - 12;
+  const para = (label, text) => wrapText(text, w).forEach((t, k) =>
+    write(`  <i>${(k ? '' : label).padEnd(9)}</i> ${esc(t)}`));
+  write(`  <b>${esc(c.name)}</b> <i>· ${esc(c.sector)}</i>`);
+  write('');
+  para('problem', c.problem);
+  para('fix', c.fix);
+  para('result', c.result);
+  write(`  <i>${'client'.padEnd(9)}</i> <i>████████████ · nice try.</i>`);
+  write(`  <i>${'link'.padEnd(9)}</i> <i>also redacted. ask nicely: <em>contact</em></i>`);
   write('');
 }
 
@@ -724,20 +732,22 @@ function buildDoc() {
   gap();
   gap();
 
-  /* systems */
-  divider('01', 'systems', $('#sys-count').textContent);
+  /* case files */
+  divider('01', 'case files', $('#case-count').textContent);
   gap();
-  SYSTEMS.forEach((s, i) => {
+  indent('  ', $('.cases-intro').textContent, MUT, W - 2);
+  gap();
+  CASES.forEach((c, i) => {
     const n = String(i + 1).padStart(2, '0');
-    const head = [['  [', FR], [n, KEY], ['] ', FR], [s.name, HI]];
+    const head = [['  [', FR], [n, KEY], ['] ', FR], [c.name, HI]];
     if (narrow) {
       row(...head);
-      row(['       ' + s.tag, MUT]);
+      row(['       ' + c.tag, MUT]);
     } else {
-      row(...head, [spread(7 + s.name.length, s.tag.length), ''], [s.tag, MUT]);
+      row(...head, [spread(7 + c.name.length, c.tag.length), ''], [c.tag, MUT]);
     }
-    row(['       ' + s.sector, MUT]);
-    indent('       ', s.note, '', W - 7);
+    row(['       ' + c.sector, MUT]);
+    indent('       ', c.result, '', W - 7);
     gap();
   });
   gap();
@@ -857,7 +867,7 @@ function replay() {
 const CMDS = {
   help: { about: 'this list', run: cmdHelp },
   replay: { about: 'type the site out again', run: replay },
-  systems: { about: 'what we run', run: cmdSystems },
+  cases: { about: 'what we\'ve built', run: cmdCases },
   open: { use: 'open <n|name>', about: 'peek at one (no links, sorry)', run: cmdOpen },
   flows: { about: 'the automations', run: cmdFlows },
   run: { use: 'run <n|id>', about: 'step one through', run: cmdRun },
@@ -867,7 +877,7 @@ const CMDS = {
   clear: { about: 'wipe the scrollback', run: () => { termDoc.textContent = ''; } },
   exit: { about: 'back to the website', run: () => setTerm(false) },
 };
-const ALIAS = { ls: 'systems', cat: 'replay', whoami: 'about', mail: 'contact', q: 'exit', quit: 'exit' };
+const ALIAS = { ls: 'cases', systems: 'cases', cat: 'replay', whoami: 'about', mail: 'contact', q: 'exit', quit: 'exit' };
 
 const hist = [];
 let histI = 0;

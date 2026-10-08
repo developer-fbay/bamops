@@ -22,10 +22,12 @@ Tick off as we go.
 ## Phase 2 — New sections
 - [ ] **T4. New hero** — external pitch copy, primary/secondary pill CTAs,
       Codex-style agent/terminal panel with redacted output.
-- [ ] **T5. Case files** — replace the systems list + preview with case-file
+- [x] **T5. Case files** — replace the systems list + preview with case-file
       cards (Problem / Fix / Result, redacted preview, cheeky footnote).
-- [ ] **T6. Redaction component** — reusable `████` bars with tooltip and
-      accessible labels.
+      Terminal `systems` is now `cases` (old name kept as an alias).
+- [x] **T6. Redaction component** — `redact(width, label)` in `main.js`: an
+      empty bar sized in `ch`, `title="nice try"`, `aria-label` for screen
+      readers. Used for client names; reuse it for anything else.
 - [ ] **T7. What we do** — services grid.
 - [ ] **T8. How we work** — 4-step process.
 - [ ] **T9. Contact upgrade** — bigger CTA section, repeat CTA in nav/hero.
