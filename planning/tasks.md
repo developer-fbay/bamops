@@ -38,7 +38,12 @@ Tick off as we go.
       readers. Used for client names; reuse it for anything else.
 - [ ] **T7. What we do** — services grid.
 - [ ] **T8. How we work** — 4-step process.
-- [ ] **T9. Contact upgrade** — bigger CTA section, repeat CTA in nav/hero.
+- [x] **T9. Contact upgrade** — contact form dressed as an AI chat window: message box, "reply to"
+      email, a Skills picker (chips go into the email), and a "+" upload that just says
+      "This is not a real AI screen. Chill." Send opens the visitor's mail app pre-filled
+      (static site, no backend yet).
+  - [ ] T9b. Swap mailto for a real form endpoint (Formspree / Supabase / n8n webhook).
+  - [ ] T9c. Repeat the CTA in the nav/hero.
 
 ## Phase 3 — Polish
 - [ ] **T10. Recolour automation canvas** to monochrome.

@@ -1032,6 +1032,139 @@ termEl.addEventListener('click', (e) => {
   termIn.focus();
 });
 
+/* ---------- contact: the chat window ---------- */
+// It only looks like an AI. Sending hands the message to the visitor's mail app, since a
+// static site has nowhere else to put it.
+const SKILLS = [
+  { id: 'automation', name: 'Automation', note: 'the boring bits, gone' },
+  { id: 'ai', name: 'AI & agents', note: 'the actually useful kind' },
+  { id: 'web', name: 'Web apps', note: 'front to back' },
+  { id: 'internal', name: 'Internal tools', note: 'what the firm runs on' },
+  { id: 'integrations', name: 'Integrations', note: 'make A talk to B' },
+  { id: 'data', name: 'Data & dashboards', note: 'numbers, finally honest' },
+  { id: 'ab', name: 'A/B testing', note: 'B, probably' },
+  { id: 'rescue', name: 'Rescue mission', note: 'someone else\'s code' },
+];
+const MAIL = 'contact@bamops.co.uk';
+
+const aiForm = $('#ai-form');
+const aiText = $('#ai-text');
+const aiEmail = $('#ai-email');
+const aiChips = $('#ai-chips');
+const aiThread = $('#ai-thread');
+const aiPop = $('#ai-pop');
+const aiSkillsBtn = $('#ai-skills-btn');
+const aiToast = $('#ai-toast');
+const aiSend = aiForm.querySelector('.ai-send');
+const aiPlus = $('#ai-upload');
+const picked = new Set();
+
+$('#ai-skill-list').innerHTML = SKILLS.map((s) => `<label>
+  <input type="checkbox" value="${s.id}"><span><b>${s.name}</b><small>${s.note}</small></span>
+</label>`).join('');
+
+const chip = (s, removable) => `<span class="ai-chip">${s.name}${removable
+  ? `<button type="button" data-id="${s.id}" aria-label="Remove ${s.name}">×</button>` : ''}</span>`;
+const pickedSkills = () => SKILLS.filter((s) => picked.has(s.id));
+
+function renderChips() {
+  aiChips.innerHTML = pickedSkills().map((s) => chip(s, true)).join('');
+  aiPop.querySelectorAll('input').forEach((i) => (i.checked = picked.has(i.value)));
+}
+
+function setPop(on) {
+  aiPop.hidden = !on;
+  aiSkillsBtn.setAttribute('aria-expanded', String(on));
+  if (on) aiPop.querySelector('input').focus();
+}
+
+aiSkillsBtn.addEventListener('click', () => setPop(aiPop.hidden));
+aiPop.addEventListener('change', (e) => {
+  const id = e.target.value;
+  if (e.target.checked) picked.add(id); else picked.delete(id);
+  renderChips();
+});
+aiChips.addEventListener('click', (e) => {
+  const b = e.target.closest('button'); if (!b) return;
+  picked.delete(b.dataset.id);
+  renderChips();
+  aiText.focus();
+});
+document.addEventListener('click', (e) => {
+  if (!aiPop.hidden && !e.target.closest('.ai-skills')) setPop(false);
+});
+$('.ai-skills').addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && !aiPop.hidden) { e.stopPropagation(); setPop(false); aiSkillsBtn.focus(); }
+});
+
+let toastT;
+function toast(html, ms = 2800) {
+  aiToast.innerHTML = html;
+  aiToast.classList.add('on');
+  clearTimeout(toastT);
+  toastT = setTimeout(() => { aiToast.classList.remove('on'); aiPlus.classList.remove('nope'); }, ms);
+}
+
+aiPlus.addEventListener('click', () => {
+  aiPlus.classList.add('nope');
+  toast('This is not a real AI screen. <b>Chill.</b>');
+});
+
+// Grows with the message, the way every chat box does, up to the cap in the stylesheet.
+const fit = () => { aiText.style.height = 'auto'; aiText.style.height = aiText.scrollHeight + 'px'; };
+const syncSend = () => aiSend.classList.toggle('idle', !aiText.value.trim());
+aiText.addEventListener('input', () => { fit(); syncSend(); });
+aiText.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) { e.preventDefault(); aiForm.requestSubmit(); }
+});
+syncSend();
+
+function say(html, cls) {
+  const el = document.createElement('div');
+  el.className = cls;
+  el.innerHTML = html;
+  aiThread.appendChild(el);
+  aiThread.scrollTop = aiThread.scrollHeight;
+  if (MOTION) G.fromTo(el, { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: .3, ease: 'power2.out' });
+  return el;
+}
+const AV = $('.ai-av').outerHTML;
+const bot = (inner) => say(AV + inner, 'ai-msg');
+
+aiForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const text = aiText.value.trim();
+  const email = aiEmail.value.trim();
+  if (!text) { toast('Type something first. We\'re good, not psychic.'); aiText.focus(); return; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    toast('We\'ll need an email to reply to. The pigeon retired.');
+    aiEmail.focus();
+    return;
+  }
+
+  const skills = pickedSkills();
+  say(`${skills.length ? `<div class="ai-chips">${skills.map((s) => chip(s)).join('')}</div>` : ''}` +
+    `<p>${esc(text)}</p><small>reply to ${esc(email)}</small>`, 'ai-me');
+
+  const body = [
+    skills.length ? `Skills: ${skills.map((s) => s.name).join(', ')}` : '',
+    `Reply to: ${email}`,
+    '',
+    text,
+  ].filter((l, i) => l || i > 0).join('\n');
+  const href = `mailto:${MAIL}?subject=${encodeURIComponent('New enquiry via the Bamops site')}&body=${encodeURIComponent(body)}`;
+
+  aiText.value = ''; fit(); syncSend();
+  picked.clear(); renderChips();
+
+  const thinking = bot('<div class="ai-dots" aria-label="Thinking"><i></i><i></i><i></i></div>');
+  setTimeout(() => {
+    thinking.remove();
+    bot('<p>Thinking done. Opening your mail app with all of that filled in. Hit send there and a real human takes it from here.</p>');
+    window.location.href = href;
+  }, MOTION ? 1100 : 0);
+});
+
 /* ---------- chrome ---------- */
 const TITLE = document.title;
 document.addEventListener('visibilitychange', () => {
