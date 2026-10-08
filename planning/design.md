@@ -6,8 +6,8 @@ colour. Calm, expensive, engineered.
 
 ## Principles
 
-1. **Monochrome first, one green.** Black, greys, white, plus a single mint
-   green accent (`#4ade80`) for anything active, live or selected. Never for
+1. **Monochrome first, one green.** Black, greys, white, plus a single lime
+   green accent (`#c6f135`) for anything active, live or selected. Never for
    large fills or body text.
 2. **Depth through greys, not shadows.** Panels sit on the background by being
    a shade lighter with a 1px hairline border.
@@ -30,7 +30,7 @@ colour. Calm, expensive, engineered.
 | `--fg` | `#f5f5f5` | Headlines, primary text |
 | `--fg-2` | `#a1a1a1` | Body copy |
 | `--fg-3` | `#6b6b6b` | Labels, metadata |
-| `--acc` | `#4ade80` | The single accent: active states, carets, live flow lines, terminal prompt |
+| `--acc` | `#c6f135` | The single accent: active states, carets, live flow lines, terminal prompt |
 | `--ok` | `var(--acc)` | Status text |
 | `--redact` | `#2a2a2a` | Redaction bars |
 
