@@ -776,6 +776,8 @@ function buildDoc() {
   gap();
 
   /* masthead */
+  ops.push({ html: '<img class="term-logo" src="assets/bamops-mark-for-dark-bg.svg" alt="Bamops" width="30" height="38">' });
+  gap();
   const sub = $('.hero .lbl').textContent.toLowerCase();
   if (narrow) {
     at(CPS.head, ['BAMOPS', HI]);
@@ -891,7 +893,8 @@ function playDoc(ops) {
   const rest = () => {
     if (el && shown < total) el.innerHTML = renderSegs(op.segs, Infinity);
     for (; i < ops.length; i++) {
-      if (!ops[i].ms) write(renderSegs(ops[i].segs, Infinity));
+      if (ops[i].html) write(ops[i].html);
+      else if (!ops[i].ms) write(renderSegs(ops[i].segs, Infinity));
     }
     termOut.scrollTop = termOut.scrollHeight;
     docSkip = null;
@@ -919,6 +922,8 @@ function playDoc(ops) {
       if (i >= ops.length) { docSkip = null; termIn.focus(); return; }
       op = ops[i++];
       if (op.ms) { el = null; setTimeout(step, op.ms); return; }
+      // Images arrive whole; there is nothing to type.
+      if (op.html) { el = null; write(op.html); continue; }
       el = write('');
       total = op.segs.reduce((n, s) => n + s[0].length, 0);
       shown = 0;

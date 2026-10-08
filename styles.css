@@ -152,7 +152,8 @@ section{padding-block:clamp(60px,9vh,104px)}
 .contact p{font:400 clamp(19px,2.6vw,30px) var(--sans);letter-spacing:-.025em;color:#f2f2f3}
 .contact a.mail{font:400 13px var(--mono);color:var(--fg-2);border-bottom:1px solid var(--line-2);padding-bottom:3px;transition:color .2s,border-color .2s}
 .contact a.mail:hover{color:var(--acc);border-color:var(--acc)}
-footer{padding:22px 0 42px;display:flex;gap:16px;flex-wrap:wrap;font:400 11px var(--mono);color:var(--fg-3);border-top:1px solid var(--line)}
+footer{padding:22px 0 42px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;font:400 11px var(--mono);color:var(--fg-3);border-top:1px solid var(--line)}
+.foot-mark{display:block;opacity:.85}
 footer span:last-child{margin-left:auto}
 footer a{transition:color .2s}
 footer a:hover{color:var(--fg-2)}
@@ -165,7 +166,15 @@ footer a:hover{color:var(--fg-2)}
   color:var(--g-br);border:1px solid rgba(255,255,255,.18);background:rgba(0,0,0,.72)}
 .mode:hover{color:var(--g-hi);border-color:rgba(255,255,255,.4)}
 body.term-on .mode{display:block}
-body.term-on .menu-btn,body.term-on .menu,body.term-on .menu-scrim{display:none}
+body.term-on .menu-btn,body.term-on .menu,body.term-on .menu-scrim,body.term-on .brand{display:none}
+
+/* logo, top left; sits under the menu scrim so it dims with the page */
+.brand{position:fixed;z-index:40;top:clamp(12px,2vw,20px);left:clamp(12px,2vw,22px);height:38px;
+  display:flex;align-items:center;gap:9px;padding:0 13px 0 12px;
+  background:rgba(17,17,17,.72);border:1px solid var(--line);border-radius:9px;backdrop-filter:blur(8px);
+  font:500 13px var(--mono);letter-spacing:.02em;color:var(--fg);transition:border-color .2s}
+.brand:hover{border-color:var(--line-2)}
+.brand img{display:block}
 
 /* hamburger + side drawer */
 .menu-btn{position:fixed;z-index:52;top:clamp(12px,2vw,20px);right:clamp(12px,2vw,22px);
@@ -218,6 +227,7 @@ body.term-on :focus-visible{outline-color:var(--g-br)}
   padding:clamp(20px,3.4vw,38px) clamp(16px,3vw,34px) 10px;text-shadow:0 0 9px rgba(255,255,255,.08)}
 /* Blank lines are empty divs, which would otherwise collapse to nothing. */
 .term-out .ln{min-height:1.7em}
+.term-logo{display:block;margin-top:4px}
 .term-out b{color:var(--g-hi);font-weight:500}
 .term-out i,.term-out .fr{color:var(--g-dim);font-style:normal}
 .term-out em{color:var(--g-br);font-style:normal}
