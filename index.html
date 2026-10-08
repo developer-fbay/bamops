@@ -169,51 +169,7 @@
         <a class="mail" href="mailto:contact@bamops.co.uk">contact@bamops.co.uk</a>
       </div>
 
-      <div class="ai rv">
-        <div class="case-top"><i></i><i></i><i></i><span>bamops — new chat</span><span>1 human online</span></div>
-        <div class="ai-thread" id="ai-thread" role="log" aria-live="polite">
-          <div class="ai-msg">
-            <span class="ai-av" aria-hidden="true"><img src="assets/bamops-mark-for-dark-bg.svg" alt="" width="13" height="17"></span>
-            <p>Hi. What needs building, fixing or quietly automating? Add the skills you're after, describe the mess, and a real human gets back to you. Usually within a working day.</p>
-          </div>
-        </div>
-        <form class="ai-box" id="ai-form" novalidate>
-          <div class="ai-reply">
-            <div class="ai-field">
-              <label for="ai-name">name</label>
-              <input id="ai-name" name="name" type="text" autocomplete="name" placeholder="who's asking?">
-            </div>
-            <div class="ai-field">
-              <label for="ai-email">email</label>
-              <input id="ai-email" name="email" type="email" autocomplete="email" placeholder="company email preferred">
-            </div>
-          </div>
-          <div class="ai-chips" id="ai-chips"></div>
-          <label class="sr" for="ai-text">Your message</label>
-          <textarea id="ai-text" name="message" rows="2" placeholder="Describe the problem. The awkward ones especially."></textarea>
-          <div class="ai-tools">
-            <button type="button" class="ai-tool ai-plus" id="ai-upload" aria-label="Upload media">
-              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M8 3v10M3 8h10"/></svg>
-            </button>
-            <div class="ai-skills">
-              <button type="button" class="ai-tool" id="ai-skills-btn" aria-expanded="false" aria-controls="ai-pop">
-                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" aria-hidden="true"><path d="M8 2l1.5 4.5L14 8l-4.5 1.5L8 14l-1.5-4.5L2 8l4.5-1.5z"/></svg>
-                <span>Skills</span>
-              </button>
-              <div class="ai-pop" id="ai-pop" role="group" aria-label="What do you need from us?" hidden>
-                <p class="lbl">What do you need from us?</p>
-                <div id="ai-skill-list"></div>
-              </div>
-            </div>
-            <span class="ai-model">humans-1.0</span>
-            <button type="submit" class="ai-send" aria-label="Send">
-              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 13V3M3.5 7.5L8 3l4.5 4.5"/></svg>
-            </button>
-          </div>
-          <p class="ai-toast" id="ai-toast" role="status"></p>
-        </form>
-        <p class="ai-fine">Bamops can make mistakes. Never the same one twice.</p>
-      </div>
+      <div class="ai rv" data-chat></div>
     </div>
   </section>
 
@@ -228,6 +184,8 @@
 
 </main>
 
+<script src="data.js"></script>
+<script src="contact.js"></script>
 <script src="main.js"></script>
 </body>
 </html>

@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>Partner Portal — BAMOPS case file</title>
+<link rel="canonical" href="https://bamops.co.uk/case/partner-portal">
+<meta name="description" content="Partner Portal: Referrals arrived by email, WhatsApp and occasionally carrier pigeon. Nobody knew who was owed what. Fewer &quot;just following up&quot; emails. Possibly zero." id="meta-desc">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<link rel="icon" href="/assets/bamops-icon.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<meta name="theme-color" content="#000000">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Bamops">
+<meta property="og:title" content="Partner Portal — BAMOPS case file" id="og-title">
+<meta property="og:description" content="Partner Portal: Referrals arrived by email, WhatsApp and occasionally carrier pigeon. Nobody knew who was owed what. Fewer &quot;just following up&quot; emails. Possibly zero." id="og-desc">
+<meta property="og:image" content="https://bamops.co.uk/assets/bamops-icon-512.png">
+<meta property="og:url" content="https://bamops.co.uk/case/partner-portal">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="/styles.css">
+<link rel="stylesheet" href="/case.css">
+</head>
+<body class="case-page" data-case="partner-portal">
+
+<a class="brand" href="/" aria-label="Bamops, home">
+  <img src="/assets/bamops-mark-for-dark-bg.svg" alt="" width="23" height="29"><span>bamops</span>
+</a>
+
+<button class="menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="menu" aria-label="Open menu">
+  <span></span><span></span><span></span>
+</button>
+<div class="menu-scrim" id="menu-scrim"></div>
+<nav class="menu" id="menu" aria-label="Case files" inert>
+  <div class="menu-top"><span class="lbl">Case files</span><span class="lbl" id="menu-count"></span></div>
+  <ol class="menu-list" id="menu-list"></ol>
+  <a class="menu-mail" href="mailto:contact@bamops.co.uk">contact@bamops.co.uk</a>
+</nav>
+
+<main class="wrap cv" id="top">
+
+  <div class="cv-top">
+    <a class="cv-back" href="/#systems">← all case files</a>
+    <span class="cv-count" id="cv-count"></span>
+  </div>
+
+  <header class="cv-head">
+    <p class="lbl" id="cv-lbl"></p>
+    <h1><span id="cv-name"></span><span class="caret" aria-hidden="true"></span></h1>
+    <p class="cv-note" id="cv-note"></p>
+  </header>
+
+  <div class="cv-grid">
+    <aside class="cv-facts" aria-label="Project facts">
+      <div><span class="lbl">Sector</span><p id="cv-sector"></p></div>
+      <div><span class="lbl">Client</span><p><span class="redact" id="cv-client"></span></p></div>
+      <div><span class="lbl">Main tech</span><p><span class="cv-tech" id="cv-tech"></span></p></div>
+      <div><span class="lbl">The rest</span>
+        <p class="cv-rest" id="cv-rest"></p>
+        <small>classified, mostly out of politeness</small>
+      </div>
+      <div class="cv-status"><i aria-hidden="true"></i><span>running. so far, it has held.</span></div>
+    </aside>
+
+    <div class="cv-write">
+      <section class="cv-row">
+        <h2 class="lbl">01 · Problem</h2>
+        <p id="cv-problem"></p>
+      </section>
+      <section class="cv-row">
+        <h2 class="lbl">02 · Fix</h2>
+        <p id="cv-fix"></p>
+      </section>
+      <section class="cv-row cv-result">
+        <h2 class="lbl">03 · Result</h2>
+        <div>
+          <p id="cv-result"></p>
+          <small id="cv-quip"></small>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <aside class="cv-cta" aria-label="Get in touch">
+    <div>
+      <p class="cv-cta-h">Need something similar?</p>
+      <p class="cv-cta-s">Or something completely different. We're fine with that too.</p>
+    </div>
+    <a class="btn btn-pri" href="#contact">Start a conversation <span aria-hidden="true">→</span></a>
+  </aside>
+
+  <section class="cv-flow" aria-label="How this project runs">
+    <div class="head">
+      <span class="n">02</span><h2>How it runs</h2><span class="meta">this build only</span>
+    </div>
+    <div class="canvas">
+      <div class="canvas-top">
+        <span class="pill" id="flow-id"></span>
+        <span id="flow-nodes"></span>
+        <button type="button" id="toggle" aria-label="Pause"></button>
+      </div>
+      <svg id="flow" role="img" aria-label="Animated automation workflow for this project"></svg>
+      <div class="canvas-foot">
+        <span id="run-step" class="s">idle</span>
+        <span class="ms" id="run-ms"></span>
+      </div>
+    </div>
+  </section>
+
+  <nav class="cv-pager" aria-label="More case files">
+    <a id="cv-prev" href="/#systems"></a>
+    <a id="cv-next" href="/#systems"></a>
+  </nav>
+
+  <section class="cv-contact" id="contact">
+    <div class="head"><span class="n">03</span><h2>Contact</h2></div>
+    <div class="reach">
+      <div class="contact">
+        <p>Got an awkward one?</p>
+        <a class="mail" href="mailto:contact@bamops.co.uk">contact@bamops.co.uk</a>
+      </div>
+      <div class="ai" data-chat></div>
+    </div>
+  </section>
+
+  <footer>
+    <img class="foot-mark" src="/assets/bamops-mark-for-dark-bg.svg" alt="Bamops" width="15" height="19">
+    <span>London · Cape Town</span>
+    <a href="https://fbxcapital.co.uk" target="_blank" rel="noopener">fbxcapital.co.uk</a>
+    <a href="https://fundingbay.co.uk" target="_blank" rel="noopener">fundingbay.co.uk</a>
+    <span class="jk" title="it held">Shipped on a Friday.</span>
+    <span>2026</span>
+  </footer>
+
+</main>
+
+<script src="/data.js"></script>
+<script src="/flow.js"></script>
+<script src="/case.js"></script>
+<script src="/contact.js"></script>
+</body>
+</html>

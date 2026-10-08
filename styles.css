@@ -505,6 +505,21 @@ section {
   transform: translateX(3px);
   color: var(--acc);
 }
+@media (min-width: 981px) {
+  .row.locked .i {
+    color: var(--acc);
+  }
+  .prev {
+    transition: border-color 0.25s;
+  }
+  .prev.locked {
+    border-color: color-mix(in srgb, var(--acc) 45%, transparent);
+  }
+  .prev.locked .case-top span:first-of-type::after {
+    content: " · pinned";
+    color: var(--acc);
+  }
+}
 .wu {
   position: absolute;
   width: 1px;

@@ -57,21 +57,32 @@ Everything that has changed on the site so far, oldest first. Work lives on the 
   - Fine print: "Bamops can make mistakes. Never the same one twice."
 - Adjusted the space above the contact section, and tightened it on phones (it was about 250px, now about 116px).
 
-### Hero and tech stack (in progress, not yet committed)
+### Hero and tech stack
 - New hero layout: the headline and copy on the left, with two buttons, **Start a conversation** (to contact) and **Case files**.
 - Added a blueprint-style drawing of the logo on the right, labelled "stem · load-bearing", "bowl · holds", "the code that powers it" and "Fig. 01 — so far, it has held."
 - The tech stack is now a scrolling logo carousel with an icon for each tool (icons in `assets/tech/`, duct tape included). The list is duplicated so it loops without a gap. Screen readers only hear it once, and the terminal still lists the stack correctly.
 
-### Mobile fixes (in progress, not yet committed)
+### Mobile fixes
 - The blueprint drawing is now centred. Its contents sat off to the right of the drawing's frame, which pushed it right on phones and cut off the edge of the lime square.
 - On phones, each case write-up now sits in its own small window, like the desktop card: red, yellow and green dots, the case number, a lime "solved" marker, and the Result picked out with a lime label and side bar.
 
-### Contact form: name and email (in progress, not yet committed)
+### Contact form: name and email
 - The "reply to" line is now two fields at the top of the box, above the message: **name** ("who's asking?") and **email** ("company email preferred"). Side by side on wider screens, stacked on phones.
 - Name is required, with its own nudge: "A name, please. "Hey you" feels cold."
 - The email that opens includes the name and email at the top, and the subject reads "New enquiry from [name] via the Bamops site".
 
-### Search and accessibility (in progress, not yet committed)
+### Contact form on every case page
+- The chat contact form now sits at the bottom of each case page, replacing the old "Got an awkward one?" button.
+- The "Start a conversation" button mid-page scrolls down to that form instead of jumping back to the homepage.
+- On a case page the assistant opens with "Liked [case name]?", and the email that opens says which case it came from.
+- The form lives in one shared file (`contact.js`), so the homepage and all five case pages use the same form. Change it once, it changes everywhere.
+
+### Case files: lock a card
+- Hovering a case in the homepage list still previews it in the side card.
+- Clicking a case locks the card to it: hovering other cases no longer changes it. The card gets a lime border and a "pinned" label.
+- Clicking anywhere that isn't a case (or clicking the locked case again) unlocks it, and hover previews come back.
+
+### Search and accessibility
 - The blueprint drawing has a proper title and description, so screen readers announce it and hovering shows a tooltip.
 - Added structured data telling Google the organisation's name, website, email and logo (the 512px PNG), so search results can show the right logo. Assumes `bamops.co.uk`.
 - The page no longer stays blank without JavaScript. Sections only start hidden (for the fade-in) when script is running to reveal them.

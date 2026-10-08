@@ -7,36 +7,7 @@ const $ = (s) => document.querySelector(s);
 const svgEl = (n, a = {}) => { const e = document.createElementNS('http://www.w3.org/2000/svg', n); for (const k in a) e.setAttribute(k, a[k]); return e; };
 
 /* ---------- case files ---------- */
-// No client names, URLs or screenshots in here. `client` is only the width of the
-// redaction bar in characters, so the real name never reaches the page source.
-const CASES = [
-  { name: 'The Brain', sector: 'finance · deal management', note: 'deal os. it thinks.', tag: 'vue · supabase', sch: 'app', client: 11,
-    problem: 'Deals lived in inboxes, spreadsheets and one person\'s memory. When that person went on holiday, so did the pipeline.',
-    fix: 'One operating system for every deal, intake to payout. It remembers everything and nags people politely.',
-    result: 'One source of truth. Holidays are allowed again.',
-    quip: 'Named accurately.' },
-  { name: 'Comparison Engine', sector: 'fintech · lead gen', note: '95% right, 100% certain.', tag: '30+ sources', sch: 'form', client: 9,
-    problem: 'Matching a business to the right funder meant hours of phone calls and a lot of gut feel.',
-    fix: 'An engine that cross-checks 30+ sources and returns a shortlist in seconds.',
-    result: '95% right, 100% certain.',
-    quip: 'The other 5% are character-building.' },
-  { name: 'Partner Portal', sector: 'b2b · introducers', note: 'CSV is an API.', tag: 'vue · supabase', sch: 'portal', client: 8,
-    problem: 'Referrals arrived by email, WhatsApp and occasionally carrier pigeon. Nobody knew who was owed what.',
-    fix: 'A portal where partners submit, track and get paid without chasing anyone.',
-    result: 'Fewer "just following up" emails. Possibly zero.',
-    quip: 'CSV is an API. Everyone insisted.' },
-  // TODO: placeholder copy until the real A/B testing project details arrive.
-  { name: 'A/B Testing', sector: 'growth · experimentation', note: 'B won. B usually wins.', tag: 'experiments', sch: 'ab', client: 10,
-    problem: 'Decisions were made by whoever spoke loudest in the meeting.',
-    fix: 'A testing setup that splits traffic, tracks what matters and calls a winner.',
-    result: 'Opinions are now optional.',
-    quip: 'Variant B. It\'s always variant B.' },
-  { name: 'Room Booking', sector: 'property · coworking', note: 'the 3pm slot is gone.', tag: 'n8n · calendar', sch: 'cal', client: 12,
-    problem: 'Meeting rooms double-booked, invoices forgotten, doors locked on the wrong people.',
-    fix: 'Booking, confirmations, door access and invoicing in one flow.',
-    result: 'Nobody fights over the 3pm slot any more. It\'s just gone.',
-    quip: 'It was gone before you read this.' },
-];
+// CASES, IC, FLOWS and QUIPS live in data.js, which index.html loads before this file.
 
 const SCH = {
   app: `<rect class="sch" x="8" y="8" width="296" height="172" rx="7"/><path class="sch" d="M70 8v172M8 34h296"/>
@@ -101,7 +72,7 @@ $('#case-count').textContent = String(CASES.length).padStart(2, '0');
 // The side card is visual only; each row carries its own write-up, which screen readers
 // get on every width and everyone gets inline on narrow screens where the card is hidden.
 $('#sys-list').innerHTML = CASES.map((c, i) => `<li>
-  <button type="button" class="row" data-i="${i}" aria-pressed="${i === 0}">
+  <button type="button" class="row" data-i="${i}" aria-pressed="false">
     <span class="i">${String(i + 1).padStart(2, '0')}</span>
     <span class="t"><b>${c.name}</b><span>${c.sector} — ${c.note}</span></span>
     <span class="r"><span class="tag">${c.tag}</span>${CHEV}</span>
@@ -115,7 +86,9 @@ $('#sys-list').innerHTML = CASES.map((c, i) => `<li>
 const prev = $('#prev');
 const sysList = $('#sys-list');
 const rows = [...sysList.querySelectorAll('.row')];
-let shown = -1, pinned = 0;
+// Hovering previews a case; clicking one locks the card to it until a click lands anywhere
+// that isn't a case row or the card itself, or the locked row is clicked again.
+let shown = -1, pinned = -1;
 
 function showCase(i) {
   if (i === shown) return;
@@ -127,18 +100,21 @@ function showCase(i) {
 
 function pinCase(i) {
   pinned = i;
-  rows.forEach((r, k) => r.setAttribute('aria-pressed', String(k === i)));
-  showCase(i);
+  rows.forEach((r, k) => {
+    r.setAttribute('aria-pressed', String(k === i));
+    r.classList.toggle('locked', k === i);
+  });
+  prev.classList.toggle('locked', i >= 0);
+  if (i >= 0) showCase(i);
 }
 
 rows.forEach((r, i) => {
-  r.addEventListener('mouseenter', () => showCase(i));
-  r.addEventListener('focus', () => showCase(i));
-  r.addEventListener('click', () => pinCase(i));
+  r.addEventListener('mouseenter', () => { if (pinned < 0) showCase(i); });
+  r.addEventListener('focus', () => { if (pinned < 0) showCase(i); });
+  r.addEventListener('click', () => pinCase(pinned === i ? -1 : i));
 });
-sysList.addEventListener('mouseleave', () => showCase(pinned));
-sysList.addEventListener('focusout', (e) => {
-  if (!sysList.contains(e.relatedTarget)) showCase(pinned);
+document.addEventListener('click', (e) => {
+  if (pinned >= 0 && !e.target.closest('.row, #prev')) pinCase(-1);
 });
 showCase(0);
 
@@ -148,7 +124,7 @@ const menu = $('#menu');
 const NARROW = matchMedia('(max-width:980px)');
 
 $('#menu-count').textContent = String(CASES.length).padStart(2, '0');
-$('#menu-list').innerHTML = CASES.map((c, i) => `<li><a href="#systems" data-i="${i}">
+$('#menu-list').innerHTML = CASES.map((c, i) => `<li><a href="/case/${c.slug}" data-i="${i}">
   <span class="i">${String(i + 1).padStart(2, '0')}</span>
   <span><b>${c.name}</b><small>${c.sector}</small></span>
 </a></li>`).join('');
@@ -167,72 +143,9 @@ menuBtn.addEventListener('click', () => setMenu(!menuOn));
 $('#menu-scrim').addEventListener('click', () => setMenu(false));
 window.addEventListener('keydown', (e) => { if (e.key === 'Escape' && menuOn) { setMenu(false); menuBtn.focus(); } });
 
-$('#menu-list').addEventListener('click', (e) => {
-  const a = e.target.closest('a'); if (!a) return;
-  e.preventDefault();
-  const i = +a.dataset.i;
-  setMenu(false);
-  pinCase(i);
-  // Narrow screens have no side card, so go straight to that project's inline write-up.
-  const target = NARROW.matches ? rows[i].closest('li') : $('#systems');
-  target.scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth', block: 'start' });
-  rows[i].focus({ preventScroll: true });
-});
+// Menu links go to each case's own page (/case/<slug>), so there is no click handler here.
 
 /* ---------- workflows ---------- */
-const IC = {
-  trigger: 'M13 3 5 14h5l-1 7 8-11h-5z',
-  http: 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18M3 12h18M12 3c2.6 2.4 2.6 15.6 0 18M12 3c-2.6 2.4-2.6 15.6 0 18',
-  ai: 'M12 4l1.7 4.3L18 10l-4.3 1.7L12 16l-1.7-4.3L6 10l4.3-1.7zM18 15l.7 1.8L20.5 17.5l-1.8.7L18 20l-.7-1.8-1.8-.7 1.8-.7z',
-  branch: 'M7 4v16M7 9h6l4-4M7 15h6l4 4',
-  db: 'M4 6c0-1.7 3.6-3 8-3s8 1.3 8 3-3.6 3-8 3-8-1.3-8-3M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3',
-  mail: 'M3 6h18v12H3zM3 7l9 6 9-6',
-  code: 'M9 7l-5 5 5 5M15 7l5 5-5 5',
-  timer: 'M12 7v5l3 2M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18',
-  doc: 'M6 3h8l4 4v14H6zM14 3v4h4',
-  bell: 'M6 9a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6M10 20a2 2 0 0 0 4 0',
-};
-
-const FLOWS = [
-  { id: 'enquiry.intake', nodes: [
-      { id: 'hook', c: 0, r: 0, k: 'trigger', nm: 'Enquiry', sb: 'webhook' },
-      { id: 'enrich', c: 1, r: 0, k: 'http', nm: 'Enrich', sb: 'companies house' },
-      { id: 'classify', c: 2, r: 0, k: 'ai', nm: 'Classify', sb: 'model' },
-      { id: 'gate', c: 3, r: 0, k: 'branch', nm: 'Qualified', sb: 'if' },
-      { id: 'brain', c: 4, r: -.62, k: 'db', nm: 'Brain', sb: 'supabase' },
-      { id: 'nurture', c: 4, r: .62, k: 'mail', nm: 'Nurture', sb: 'sequence' },
-    ], edges: [['hook', 'enrich'], ['enrich', 'classify'], ['classify', 'gate'], ['gate', 'brain', 'true'], ['gate', 'nurture', 'false']] },
-  { id: 'lender.match', nodes: [
-      { id: 'app', c: 0, r: 0, k: 'trigger', nm: 'Application', sb: 'brain' },
-      { id: 'criteria', c: 1, r: 0, k: 'code', nm: 'Criteria', sb: 'rules' },
-      { id: 'score', c: 2, r: 0, k: 'ai', nm: 'Score', sb: 'model' },
-      { id: 'cut', c: 3, r: 0, k: 'branch', nm: 'Shortlist', sb: 'top 5' },
-      { id: 'pack', c: 4, r: -.62, k: 'doc', nm: 'Lender pack', sb: 'pdf' },
-      { id: 'log', c: 4, r: .62, k: 'bell', nm: 'Reason', sb: 'log' },
-    ], edges: [['app', 'criteria'], ['criteria', 'score'], ['score', 'cut'], ['cut', 'pack', 'true'], ['cut', 'log', 'false']] },
-  { id: 'booking.ops', nodes: [
-      { id: 'bk', c: 0, r: 0, k: 'trigger', nm: 'Booking', sb: 'webhook' },
-      { id: 'avail', c: 1, r: 0, k: 'code', nm: 'Availability', sb: 'rooms' },
-      { id: 'conf', c: 2, r: 0, k: 'mail', nm: 'Confirm', sb: 'ics' },
-      { id: 'win', c: 3, r: 0, k: 'branch', nm: 'Window', sb: 'if' },
-      { id: 'door', c: 4, r: -.62, k: 'http', nm: 'Access', sb: 'door api' },
-      { id: 'inv', c: 4, r: .62, k: 'db', nm: 'Invoice', sb: 'ledger' },
-    ], edges: [['bk', 'avail'], ['avail', 'conf'], ['conf', 'win'], ['win', 'door', 'true'], ['win', 'inv', 'false']] },
-  { id: 'friday.deploy', nodes: [
-      { id: 'commit', c: 0, r: 0, k: 'code', nm: 'Commit', sb: '--no-verify' },
-      { id: 'tests', c: 1, r: 0, k: 'doc', nm: 'Skip tests', sb: 'flaky anyway' },
-      { id: 'ship', c: 2, r: 0, k: 'http', nm: 'Deploy', sb: 'friday 16:58' },
-      { id: 'pray', c: 3, r: 0, k: 'branch', nm: 'Pray', sb: 'if' },
-      { id: 'pub', c: 4, r: -.62, k: 'timer', nm: 'Weekend', sb: 'clock out' },
-      { id: 'undo', c: 4, r: .62, k: 'db', nm: 'Rollback', sb: 'git revert' },
-    ], edges: [['commit', 'tests'], ['tests', 'ship'], ['ship', 'pray'], ['pray', 'pub', 'held'], ['pray', 'undo', 'oh no']] },
-];
-
-const QUIPS = {
-  'friday.deploy': ['see you monday', 'nobody noticed', 'held, remarkably', 'the pub won'],
-  _: ['nobody was paged', 'no standups were held', 'not a single ticket', 'no one had to be told', 'mildly pleased'],
-};
-
 const flowSvg = $('#flow');
 const tabsEl = $('#tabs');
 const stepEl = $('#run-step');
@@ -1043,143 +956,6 @@ termEl.addEventListener('click', (e) => {
   if (e.target.closest('a') || String(window.getSelection())) return;
   if (docSkip) docSkip();
   termIn.focus();
-});
-
-/* ---------- contact: the chat window ---------- */
-// It only looks like an AI. Sending hands the message to the visitor's mail app, since a
-// static site has nowhere else to put it.
-const SKILLS = [
-  { id: 'automation', name: 'Automation', note: 'the boring bits, gone' },
-  { id: 'ai', name: 'AI & agents', note: 'the actually useful kind' },
-  { id: 'web', name: 'Web apps', note: 'front to back' },
-  { id: 'internal', name: 'Internal tools', note: 'what the firm runs on' },
-  { id: 'integrations', name: 'Integrations', note: 'make A talk to B' },
-  { id: 'data', name: 'Data & dashboards', note: 'numbers, finally honest' },
-  { id: 'ab', name: 'A/B testing', note: 'B, probably' },
-  { id: 'rescue', name: 'Rescue mission', note: 'someone else\'s code' },
-];
-const MAIL = 'contact@bamops.co.uk';
-
-const aiForm = $('#ai-form');
-const aiText = $('#ai-text');
-const aiName = $('#ai-name');
-const aiEmail = $('#ai-email');
-const aiChips = $('#ai-chips');
-const aiThread = $('#ai-thread');
-const aiPop = $('#ai-pop');
-const aiSkillsBtn = $('#ai-skills-btn');
-const aiToast = $('#ai-toast');
-const aiSend = aiForm.querySelector('.ai-send');
-const aiPlus = $('#ai-upload');
-const picked = new Set();
-
-$('#ai-skill-list').innerHTML = SKILLS.map((s) => `<label>
-  <input type="checkbox" value="${s.id}"><span><b>${s.name}</b><small>${s.note}</small></span>
-</label>`).join('');
-
-const chip = (s, removable) => `<span class="ai-chip">${s.name}${removable
-  ? `<button type="button" data-id="${s.id}" aria-label="Remove ${s.name}">×</button>` : ''}</span>`;
-const pickedSkills = () => SKILLS.filter((s) => picked.has(s.id));
-
-function renderChips() {
-  aiChips.innerHTML = pickedSkills().map((s) => chip(s, true)).join('');
-  aiPop.querySelectorAll('input').forEach((i) => (i.checked = picked.has(i.value)));
-}
-
-function setPop(on) {
-  aiPop.hidden = !on;
-  aiSkillsBtn.setAttribute('aria-expanded', String(on));
-  if (on) aiPop.querySelector('input').focus();
-}
-
-aiSkillsBtn.addEventListener('click', () => setPop(aiPop.hidden));
-aiPop.addEventListener('change', (e) => {
-  const id = e.target.value;
-  if (e.target.checked) picked.add(id); else picked.delete(id);
-  renderChips();
-});
-aiChips.addEventListener('click', (e) => {
-  const b = e.target.closest('button'); if (!b) return;
-  picked.delete(b.dataset.id);
-  renderChips();
-  aiText.focus();
-});
-document.addEventListener('click', (e) => {
-  if (!aiPop.hidden && !e.target.closest('.ai-skills')) setPop(false);
-});
-$('.ai-skills').addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && !aiPop.hidden) { e.stopPropagation(); setPop(false); aiSkillsBtn.focus(); }
-});
-
-let toastT;
-function toast(html, ms = 2800) {
-  aiToast.innerHTML = html;
-  aiToast.classList.add('on');
-  clearTimeout(toastT);
-  toastT = setTimeout(() => { aiToast.classList.remove('on'); aiPlus.classList.remove('nope'); }, ms);
-}
-
-aiPlus.addEventListener('click', () => {
-  aiPlus.classList.add('nope');
-  toast('This is not a real AI screen. <b>Chill.</b>');
-});
-
-// Grows with the message, the way every chat box does, up to the cap in the stylesheet.
-const fit = () => { aiText.style.height = 'auto'; aiText.style.height = aiText.scrollHeight + 'px'; };
-const syncSend = () => aiSend.classList.toggle('idle', !aiText.value.trim());
-aiText.addEventListener('input', () => { fit(); syncSend(); });
-aiText.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) { e.preventDefault(); aiForm.requestSubmit(); }
-});
-syncSend();
-
-function say(html, cls) {
-  const el = document.createElement('div');
-  el.className = cls;
-  el.innerHTML = html;
-  aiThread.appendChild(el);
-  aiThread.scrollTop = aiThread.scrollHeight;
-  if (MOTION) G.fromTo(el, { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: .3, ease: 'power2.out' });
-  return el;
-}
-const AV = $('.ai-av').outerHTML;
-const bot = (inner) => say(AV + inner, 'ai-msg');
-
-aiForm.addEventListener('submit', (e) => {
-  e.preventDefault();
-  const text = aiText.value.trim();
-  const name = aiName.value.trim();
-  const email = aiEmail.value.trim();
-  if (!text) { toast('Type something first. We\'re good, not psychic.'); aiText.focus(); return; }
-  if (!name) { toast('A name, please. "Hey you" feels cold.'); aiName.focus(); return; }
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    toast('We\'ll need an email to reply to. The pigeon retired.');
-    aiEmail.focus();
-    return;
-  }
-
-  const skills = pickedSkills();
-  say(`${skills.length ? `<div class="ai-chips">${skills.map((s) => chip(s)).join('')}</div>` : ''}` +
-    `<p>${esc(text)}</p><small>${esc(name)} · ${esc(email)}</small>`, 'ai-me');
-
-  const body = [
-    `Name: ${name}`,
-    `Email: ${email}`,
-    skills.length ? `Skills: ${skills.map((s) => s.name).join(', ')}` : '',
-    '',
-    text,
-  ].filter((l, i) => l || i > 2).join('\n');
-  const href = `mailto:${MAIL}?subject=${encodeURIComponent(`New enquiry from ${name} via the Bamops site`)}&body=${encodeURIComponent(body)}`;
-
-  aiText.value = ''; fit(); syncSend();
-  picked.clear(); renderChips();
-
-  const thinking = bot('<div class="ai-dots" aria-label="Thinking"><i></i><i></i><i></i></div>');
-  setTimeout(() => {
-    thinking.remove();
-    bot('<p>Thinking done. Opening your mail app with all of that filled in. Hit send there and a real human takes it from here.</p>');
-    window.location.href = href;
-  }, MOTION ? 1100 : 0);
 });
 
 /* ---------- chrome ---------- */
