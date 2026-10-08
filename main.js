@@ -139,6 +139,43 @@ sysList.addEventListener('focusout', (e) => {
 });
 showCase(0);
 
+/* ---------- menu ---------- */
+const menuBtn = $('#menu-btn');
+const menu = $('#menu');
+const NARROW = matchMedia('(max-width:980px)');
+
+$('#menu-count').textContent = String(CASES.length).padStart(2, '0');
+$('#menu-list').innerHTML = CASES.map((c, i) => `<li><a href="#systems" data-i="${i}">
+  <span class="i">${String(i + 1).padStart(2, '0')}</span>
+  <span><b>${c.name}</b><small>${c.sector}</small></span>
+</a></li>`).join('');
+
+let menuOn = false;
+function setMenu(on) {
+  menuOn = on;
+  document.body.classList.toggle('menu-on', on);
+  menu.inert = !on;
+  menuBtn.setAttribute('aria-expanded', String(on));
+  menuBtn.setAttribute('aria-label', on ? 'Close menu' : 'Open menu');
+  if (on) menu.querySelector('a').focus();
+}
+
+menuBtn.addEventListener('click', () => setMenu(!menuOn));
+$('#menu-scrim').addEventListener('click', () => setMenu(false));
+window.addEventListener('keydown', (e) => { if (e.key === 'Escape' && menuOn) { setMenu(false); menuBtn.focus(); } });
+
+$('#menu-list').addEventListener('click', (e) => {
+  const a = e.target.closest('a'); if (!a) return;
+  e.preventDefault();
+  const i = +a.dataset.i;
+  setMenu(false);
+  pinCase(i);
+  // Narrow screens have no side card, so go straight to that project's inline write-up.
+  const target = NARROW.matches ? rows[i].closest('li') : $('#systems');
+  target.scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth', block: 'start' });
+  rows[i].focus({ preventScroll: true });
+});
+
 /* ---------- workflows ---------- */
 const IC = {
   trigger: 'M13 3 5 14h5l-1 7 8-11h-5z',
@@ -937,8 +974,7 @@ function setTerm(on) {
   if (on) wasAt = window.scrollY;
 
   document.body.classList.toggle('term-on', on);
-  modeBtn.textContent = on ? 'website' : 'terminal';
-  modeBtn.setAttribute('aria-pressed', String(on));
+  if (on && menuOn) setMenu(false);
 
   if (on) {
     // The canvas is hidden now, so stop it rather than animate where nobody is looking.
@@ -954,11 +990,14 @@ function setTerm(on) {
     if (wasPlaying) setPlaying(true);
     // 'instant' on purpose: the page sets scroll-behavior:smooth, and returning should land.
     window.scrollTo({ top: wasAt, behavior: 'instant' });
-    modeBtn.focus();
+    menuBtn.focus();
   }
 }
 
-modeBtn.addEventListener('click', () => setTerm(!termOn));
+modeBtn.addEventListener('click', () => setTerm(false));
+
+// The terminal has no button on the page any more; it lives behind the console.
+window.terminal = () => { setTerm(true); return 'bamops:~$ welcome in. type help, or exit to leave.'; };
 
 $('#term-form').addEventListener('submit', (e) => {
   e.preventDefault();
@@ -997,6 +1036,7 @@ document.addEventListener('visibilitychange', () => {
 console.log('%cBAMOPS', 'font:600 26px/1.4 system-ui;color:#f5f5f5');
 console.log('%cYou opened the console. Nosy. We approve.', 'color:#9b9da2;font:13px/1.6 ui-monospace,monospace');
 console.log('%cNo framework, no build step. Terribly sorry about the JavaScript.', 'color:#64666c;font:13px/1.6 ui-monospace,monospace');
+console.log('%cSince you\'re here: type %cterminal()%c and press enter.', 'color:#9b9da2;font:13px/1.6 ui-monospace,monospace', 'color:#f5f5f5;font:13px/1.6 ui-monospace,monospace;background:#222;padding:1px 5px;border-radius:3px', 'color:#9b9da2;font:13px/1.6 ui-monospace,monospace');
 console.log('%ccontact@bamops.co.uk — do mention you looked.', 'color:#9b9da2;font:13px/1.6 ui-monospace,monospace');
 
 if (MOTION) {

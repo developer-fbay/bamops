@@ -27,6 +27,10 @@ Tick off as we go.
       Terminal `systems` is now `cases` (old name kept as an alias).
       Layout: project list on the left, write-up card on the side (hover to
       preview, click to pin). On narrow screens the write-ups sit inline.
+- [x] **T5c. Hamburger menu** — side drawer (desktop + mobile) listing the
+      case files. Terminal button removed; terminal now opened by typing
+      `terminal()` in the browser console (hinted in an HTML comment and a
+      console message).
 - [ ] **T5b. A/B testing project** — replace placeholder copy with real
       details (GTM project removed).
 - [x] **T6. Redaction component** — `redact(width, label)` in `main.js`: an

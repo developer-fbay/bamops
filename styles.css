@@ -70,6 +70,7 @@ section{padding-block:clamp(60px,9vh,104px)}
   padding:19px 10px 19px 2px;border:0;border-top:1px solid var(--line);background:none;color:inherit;font:inherit;
   text-align:left;cursor:pointer;position:relative;transition:background .25s}
 .sys-list li:last-child{border-bottom:1px solid var(--line)}
+.sys-list li{scroll-margin-top:64px}
 .row::after{content:"";position:absolute;left:0;right:0;top:-1px;height:1px;background:var(--acc);transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.22,1,.36,1)}
 .row:hover,.row:focus-visible,.row.on{background:rgba(255,255,255,.02)}
 .row.on::after{transform:scaleX(1)}
@@ -154,13 +155,45 @@ footer a{transition:color .2s}
 footer a:hover{color:var(--fg-2)}
 
 /* mode toggle + terminal */
-.mode{position:fixed;z-index:70;top:clamp(12px,2vw,20px);right:clamp(12px,2vw,22px);
-  font:400 10.5px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--fg-3);
-  background:rgba(17,17,17,.72);border:1px solid var(--line);border-radius:7px;padding:6px 11px;
-  cursor:pointer;backdrop-filter:blur(8px);transition:color .2s,border-color .2s}
-.mode:hover{color:var(--fg);border-color:var(--line-2)}
-body.term-on .mode{color:var(--g-br);border-color:rgba(255,255,255,.18);background:rgba(0,0,0,.72)}
-body.term-on .mode:hover{color:var(--g-hi);border-color:rgba(255,255,255,.4)}
+/* the terminal's way back out; only exists while the terminal is open */
+.mode{position:fixed;z-index:70;top:clamp(12px,2vw,20px);right:clamp(12px,2vw,22px);display:none;
+  font:400 10.5px var(--mono);letter-spacing:.1em;text-transform:uppercase;
+  border-radius:7px;padding:6px 11px;cursor:pointer;backdrop-filter:blur(8px);transition:color .2s,border-color .2s;
+  color:var(--g-br);border:1px solid rgba(255,255,255,.18);background:rgba(0,0,0,.72)}
+.mode:hover{color:var(--g-hi);border-color:rgba(255,255,255,.4)}
+body.term-on .mode{display:block}
+body.term-on .menu-btn,body.term-on .menu,body.term-on .menu-scrim{display:none}
+
+/* hamburger + side drawer */
+.menu-btn{position:fixed;z-index:52;top:clamp(12px,2vw,20px);right:clamp(12px,2vw,22px);
+  width:38px;height:38px;display:grid;place-content:center;gap:5px;cursor:pointer;
+  background:rgba(17,17,17,.72);border:1px solid var(--line);border-radius:9px;backdrop-filter:blur(8px);
+  transition:border-color .2s}
+.menu-btn:hover{border-color:var(--line-2)}
+.menu-btn span{display:block;width:16px;height:1.5px;background:var(--fg-2);border-radius:1px;
+  transition:transform .35s cubic-bezier(.22,1,.36,1),opacity .2s,background .2s}
+.menu-btn:hover span{background:var(--fg)}
+body.menu-on .menu-btn span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+body.menu-on .menu-btn span:nth-child(2){opacity:0}
+body.menu-on .menu-btn span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+.menu-scrim{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.55);backdrop-filter:blur(2px);
+  opacity:0;pointer-events:none;transition:opacity .35s}
+body.menu-on .menu-scrim{opacity:1;pointer-events:auto}
+.menu{position:fixed;z-index:51;top:0;right:0;bottom:0;width:min(380px,88vw);display:flex;flex-direction:column;
+  padding:clamp(70px,10vh,96px) 26px 26px;background:var(--panel);border-left:1px solid var(--line);
+  transform:translateX(100%);transition:transform .45s cubic-bezier(.22,1,.36,1);overflow-y:auto}
+body.menu-on .menu{transform:none}
+body.menu-on{overflow:hidden}
+.menu-top{display:flex;justify-content:space-between;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.menu-list a{display:grid;grid-template-columns:26px minmax(0,1fr);gap:12px;align-items:baseline;
+  padding:16px 2px;border-bottom:1px solid var(--line);transition:background .2s}
+.menu-list a:hover,.menu-list a:focus-visible{background:rgba(255,255,255,.02)}
+.menu-list .i{font:400 11px var(--mono);color:var(--fg-3)}
+.menu-list b{display:block;font:500 17px var(--sans);letter-spacing:-.015em;color:var(--fg-2);transition:color .2s}
+.menu-list a:hover b,.menu-list a:focus-visible b{color:var(--fg)}
+.menu-list small{display:block;margin-top:3px;font:400 11px var(--mono);color:var(--fg-3)}
+.menu-mail{margin-top:auto;padding-top:24px;font:400 12px var(--mono);color:var(--fg-3);transition:color .2s}
+.menu-mail:hover{color:var(--fg)}
 
 .term{position:fixed;inset:0;z-index:60;display:none;flex-direction:column;
   background:var(--g-0);color:var(--g);font:400 clamp(12px,1.02vw,13.5px)/1.7 var(--mono)}
