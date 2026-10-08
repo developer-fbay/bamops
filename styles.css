@@ -79,7 +79,7 @@ a {
 }
 ::selection {
   background: color-mix(in srgb, var(--acc) 28%, transparent);
-  color: #fff;
+  color: var(--fg);
 }
 .mono {
   font-family: var(--mono);
@@ -182,7 +182,7 @@ a {
 .hero h1 {
   font: 400 clamp(38px, 6.6vw, 84px)/1.02 var(--sans);
   letter-spacing: -0.04em;
-  color: #f4f4f5;
+  color: var(--fg);
   max-width: 15ch;
   margin: 22px 0 0;
 }
@@ -247,7 +247,7 @@ section {
 .head .meta {
   margin-left: auto;
   font: 400 11px var(--mono);
-  color: var(--fg-3);
+  color: var(--fg-2);
 }
 
 /* case files */
@@ -316,7 +316,7 @@ section {
   display: block;
   font: 500 16px var(--sans);
   letter-spacing: -0.015em;
-  color: #f1f1f2;
+  color: var(--fg);
 }
 .row .t span {
   display: block;
@@ -371,7 +371,7 @@ section {
   padding: 11px 14px;
   border-bottom: 1px solid var(--line);
   font: 400 11px var(--mono);
-  color: var(--fg-3);
+  color: var(--fg-2);
 }
 .case-top i {
   width: 10px;
@@ -445,7 +445,7 @@ section {
 .client {
   margin-top: 6px;
   font: 400 11.5px var(--mono);
-  color: var(--fg-3);
+  color: var(--fg-2);
 }
 .case-body dl,
 .wu dl {
@@ -473,7 +473,7 @@ section {
 }
 .quip {
   font: 400 11.5px var(--mono);
-  color: var(--fg-3);
+  color: var(--fg-2);
   font-style: italic;
 }
 .case-foot {
@@ -524,7 +524,7 @@ section {
 }
 .tabs button {
   font: 400 11.5px var(--mono);
-  color: var(--fg-3);
+  color: var(--fg-2);
   background: none;
   border: 1px solid transparent;
   border-radius: 7px;
@@ -536,7 +536,7 @@ section {
     background 0.2s;
 }
 .tabs button:hover {
-  color: var(--fg-2);
+  color: var(--fg);
 }
 .tabs button[aria-selected="true"] {
   color: var(--fg);
@@ -562,7 +562,7 @@ section {
   padding: 11px 14px;
   border-bottom: 1px solid var(--line);
   font: 400 11px var(--mono);
-  color: var(--fg-3);
+  color: var(--fg-2);
 }
 .canvas-top .pill {
   border: 1px solid var(--line);
@@ -574,7 +574,7 @@ section {
   background: none;
   border: 1px solid var(--line);
   border-radius: 6px;
-  color: var(--fg-3);
+  color: var(--fg-2);
   width: 24px;
   height: 24px;
   display: grid;
@@ -651,7 +651,7 @@ section {
   stroke: var(--acc);
 }
 .node.on .nm {
-  fill: #f3f3f4;
+  fill: var(--fg);
 }
 .canvas-foot {
   display: flex;
@@ -660,11 +660,11 @@ section {
   padding: 11px 14px;
   border-top: 1px solid var(--line);
   font: 400 11px var(--mono);
-  color: var(--fg-3);
+  color: var(--fg-2);
   min-height: 41px;
 }
 .canvas-foot .s {
-  color: var(--fg-2);
+  color: var(--fg);
 }
 .canvas-foot .ms {
   margin-left: auto;
@@ -694,7 +694,7 @@ section {
 .contact p {
   font: 400 clamp(19px, 2.6vw, 30px) var(--sans);
   letter-spacing: -0.025em;
-  color: #f2f2f3;
+  color: var(--fg);
   max-width: 16ch;
 }
 .contact a.mail {
@@ -782,7 +782,7 @@ section {
   display: block;
   margin-top: 6px;
   font: 400 11px var(--mono);
-  color: var(--fg-3);
+  color: var(--fg-2);
 }
 .ai-dots {
   display: flex;
@@ -898,7 +898,7 @@ section {
   font: 400 11.5px var(--mono);
 }
 .ai-reply label {
-  color: var(--fg-3);
+  color: var(--fg-2);
   white-space: nowrap;
 }
 .ai-reply input {
@@ -1017,7 +1017,7 @@ section {
 .ai-pop small {
   display: block;
   font: 400 11px var(--mono);
-  color: var(--fg-3);
+  color: var(--fg-2);
 }
 .ai-model {
   margin-left: auto;
@@ -1084,7 +1084,7 @@ section {
   padding: 0 14px 12px;
   text-align: center;
   font: 400 10.5px var(--mono);
-  color: var(--fg-3);
+  color: var(--fg-2);
 }
 footer {
   padding: 22px 0 42px;
@@ -1093,7 +1093,7 @@ footer {
   gap: 16px;
   flex-wrap: wrap;
   font: 400 11px var(--mono);
-  color: var(--fg-3);
+  color: var(--fg-2);
   border-top: 1px solid var(--line);
 }
 .foot-mark {
@@ -1107,7 +1107,7 @@ footer a {
   transition: color 0.2s;
 }
 footer a:hover {
-  color: var(--fg-2);
+  color: var(--fg);
 }
 
 /* mode toggle + terminal */
@@ -1152,11 +1152,11 @@ body.term-on .brand {
   z-index: 40;
   top: clamp(12px, 2vw, 20px);
   left: clamp(12px, 2vw, 22px);
-  height: 38px;
+  height: 42px;
   display: flex;
   align-items: center;
-  gap: 9px;
-  padding: 0 13px 0 12px;
+  gap: 10px;
+  padding: 0 14px 0 12px;
   background: rgba(17, 17, 17, 0.72);
   border: 1px solid var(--line);
   border-radius: 9px;
@@ -1179,8 +1179,8 @@ body.term-on .brand {
   z-index: 52;
   top: clamp(12px, 2vw, 20px);
   right: clamp(12px, 2vw, 22px);
-  width: 38px;
-  height: 38px;
+  width: 42px;
+  height: 42px;
   display: grid;
   place-content: center;
   gap: 5px;
@@ -1298,13 +1298,13 @@ body.menu-on {
   display: block;
   margin-top: 3px;
   font: 400 11px var(--mono);
-  color: var(--fg-3);
+  color: var(--fg-2);
 }
 .menu-mail {
   margin-top: auto;
   padding-top: 24px;
   font: 400 12px var(--mono);
-  color: var(--fg-3);
+  color: var(--fg-2);
   transition: color 0.2s;
 }
 .menu-mail:hover {
@@ -1530,6 +1530,10 @@ body.term-on :focus-visible {
   .hero h1 {
     max-width: none;
     min-height: 2.04em;
+  }
+  #contact {
+    margin-top: 0;
+    padding-top: 40px;
   }
   .ai-box {
     margin: 10px;
