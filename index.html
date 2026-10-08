@@ -27,6 +27,18 @@
 <meta name="twitter:title" content="BAMOPS — Technology, Automation, Product">
 <meta name="twitter:description" content="Technology, automation and product. We build what the firm runs on. So far, it has held.">
 <meta name="twitter:image" content="https://bamops.co.uk/assets/bamops-icon-512.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Bamops",
+  "url": "https://bamops.co.uk/",
+  "logo": "https://bamops.co.uk/assets/bamops-icon-512.png",
+  "email": "contact@bamops.co.uk",
+  "description": "Technology, automation and product. We build what the firm runs on. So far, it has held."
+}
+</script>
+<script>document.documentElement.classList.add('js');</script>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -65,15 +77,55 @@
 <main id="top">
 
   <div class="wrap hero" id="intro">
-    <p class="lbl rv">Technology · Automation · Product</p>
-    <h1 class="rv"><span id="type">Quietly load-bearing</span><span class="caret" id="caret"></span></h1>
-    <p class="rv">We build what the firm runs on. So far, it has held.</p>
-    <div class="stack rv">
-      <span>typescript</span><span>python</span><span>vue</span><span>react</span><span>next.js</span>
-      <span>supabase</span><span>postgres</span>
-      <span>openai</span><span>langchain</span><span>huggingface</span>
-      <span>n8n</span><span>zapier</span>
-      <span class="jk" title="structural">duct tape</span>
+    <div class="hero-copy">
+      <p class="lbl rv">Technology · Automation · Product</p>
+      <h1 class="rv"><span id="type">Quietly load-bearing</span><span class="caret" id="caret"></span></h1>
+      <p class="rv">We build what the firm runs on. So far, it has held.</p>
+      <div class="hero-cta rv">
+        <a class="btn btn-pri" href="#contact">Start a conversation <span aria-hidden="true">→</span></a>
+        <a class="btn" href="#systems">Case files</a>
+      </div>
+    </div>
+    <figure class="hero-art rv">
+      <svg viewBox="48 0 520 480" role="img" aria-labelledby="bp-title" aria-describedby="bp-desc">
+        <title id="bp-title">Blueprint of the Bamops logo</title>
+        <desc id="bp-desc">The stem is load-bearing, the bowl holds, and the lime square is the code that powers it.</desc>
+        <g class="bp-grid"><path d="M48 80H568M48 160H568M48 240H568M48 320H568M48 400H568M80 0V480M160 0V480M240 0V480M320 0V480M400 0V480M480 0V480M560 0V480"/></g>
+        <g transform="translate(150 20) scale(3.5)">
+          <path class="bp-outer" d="M36 66 H62 A22 22 0 0 1 62 110 H44"/>
+          <path class="bp-inner" d="M36 66 H62 A22 22 0 0 1 62 110 H44"/>
+          <rect class="bp-stem" x="26" y="8" width="18" height="100"/>
+          <rect class="bp-unit" x="92" y="92" width="16" height="16"/>
+        </g>
+        <path class="bp-dim" d="M110 40V410M104 40H116M104 410H116"/>
+        <g class="bp-txt">
+          <text x="94" y="225" transform="rotate(-90 94 225)" text-anchor="middle">STEM · LOAD-BEARING</text>
+          <text x="380" y="70">BOWL · HOLDS</text>
+          <text class="bp-acc" x="512" y="460" text-anchor="end">THE CODE THAT POWERS IT</text>
+          <text class="bp-cap" x="150" y="478">FIG. 01 — SO FAR, IT HAS HELD.</text>
+        </g>
+        <path class="bp-lead" d="M376 66L330 150"/>
+        <path class="bp-lead bp-lead-acc" d="M500 402V446"/>
+      </svg>
+    </figure>
+    <div class="stack rv" role="region" aria-label="Technology we use">
+      <div class="stack-track">
+        <ul class="stack-set">
+          <li><i class="ic" style="--i:url(assets/tech/typescript.svg)"></i><span>typescript</span></li>
+          <li><i class="ic" style="--i:url(assets/tech/python.svg)"></i><span>python</span></li>
+          <li><i class="ic" style="--i:url(assets/tech/vue.svg)"></i><span>vue</span></li>
+          <li><i class="ic" style="--i:url(assets/tech/react.svg)"></i><span>react</span></li>
+          <li><i class="ic" style="--i:url(assets/tech/nextjs.svg)"></i><span>next.js</span></li>
+          <li><i class="ic" style="--i:url(assets/tech/supabase.svg)"></i><span>supabase</span></li>
+          <li><i class="ic" style="--i:url(assets/tech/postgres.svg)"></i><span>postgres</span></li>
+          <li><i class="ic" style="--i:url(assets/tech/openai.svg)"></i><span>openai</span></li>
+          <li><i class="ic" style="--i:url(assets/tech/langchain.svg)"></i><span>langchain</span></li>
+          <li><i class="ic" style="--i:url(assets/tech/huggingface.svg)"></i><span>huggingface</span></li>
+          <li><i class="ic" style="--i:url(assets/tech/n8n.svg)"></i><span>n8n</span></li>
+          <li><i class="ic" style="--i:url(assets/tech/zapier.svg)"></i><span>zapier</span></li>
+          <li class="jk" title="structural"><i class="ic" style="--i:url(assets/tech/duct-tape.svg)"></i><span>duct tape</span></li>
+        </ul>
+      </div>
     </div>
   </div>
 
@@ -126,13 +178,19 @@
           </div>
         </div>
         <form class="ai-box" id="ai-form" novalidate>
+          <div class="ai-reply">
+            <div class="ai-field">
+              <label for="ai-name">name</label>
+              <input id="ai-name" name="name" type="text" autocomplete="name" placeholder="who's asking?">
+            </div>
+            <div class="ai-field">
+              <label for="ai-email">email</label>
+              <input id="ai-email" name="email" type="email" autocomplete="email" placeholder="company email preferred">
+            </div>
+          </div>
           <div class="ai-chips" id="ai-chips"></div>
           <label class="sr" for="ai-text">Your message</label>
           <textarea id="ai-text" name="message" rows="2" placeholder="Describe the problem. The awkward ones especially."></textarea>
-          <div class="ai-reply">
-            <label for="ai-email">reply to</label>
-            <input id="ai-email" name="email" type="email" autocomplete="email" placeholder="you@company.com">
-          </div>
           <div class="ai-tools">
             <button type="button" class="ai-tool ai-plus" id="ai-upload" aria-label="Upload media">
               <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M8 3v10M3 8h10"/></svg>

@@ -106,7 +106,10 @@ $('#sys-list').innerHTML = CASES.map((c, i) => `<li>
     <span class="t"><b>${c.name}</b><span>${c.sector} — ${c.note}</span></span>
     <span class="r"><span class="tag">${c.tag}</span>${CHEV}</span>
   </button>
-  <div class="wu">${writeup(c)}</div>
+  <div class="wu">
+    <div class="case-top wu-top" aria-hidden="true"><i></i><i></i><i></i><span>${caseNo(i)}</span><span class="wu-ok">solved</span></div>
+    <div class="wu-body">${writeup(c)}</div>
+  </div>
 </li>`).join('');
 
 const prev = $('#prev');
@@ -447,7 +450,7 @@ function startHeadline(delay) {
 // (#flow-id, #flow-nodes, #run-step) or hover rewrites (#prev-name) is left out, or typing
 // would fight whatever set it last.
 const TYPED = [
-  '.hero p', '#type', '.stack span',
+  '.hero p', '#type',
   '.head .n', '.head h2', '.head .meta',
   '.cases-intro', '.row .i', '.row .t b', '.row .t span', '.row .tag',
   '.tabs button', '.contact p', '.contact a.mail',
@@ -664,7 +667,17 @@ function cmdRun(arg) {
 // Read back off the page rather than restating it, so the two modes cannot drift apart.
 // Direct children only: a mid-type chip holds a .rest wrapper that would otherwise be
 // collected as a second copy of the same word.
-const stackItems = () => [...document.querySelectorAll('.stack > span')].map((s) => s.textContent);
+// Tech carousel: a second copy of the list makes the scroll loop seamlessly. It is hidden from
+// screen readers and is never counted by stackItems().
+(() => {
+  const set = document.querySelector('.stack-set');
+  if (!set) return;
+  const copy = set.cloneNode(true);
+  copy.setAttribute('aria-hidden', 'true');
+  copy.classList.add('stack-copy');
+  set.after(copy);
+})();
+const stackItems = () => [...document.querySelectorAll('.stack-set:not(.stack-copy) li')].map((s) => s.textContent.trim());
 
 function cmdAbout() {
   write(`<b>BAMOPS</b> <i>— ${esc($('.hero .lbl').textContent.toLowerCase())}</i>`);
@@ -1049,6 +1062,7 @@ const MAIL = 'contact@bamops.co.uk';
 
 const aiForm = $('#ai-form');
 const aiText = $('#ai-text');
+const aiName = $('#ai-name');
 const aiEmail = $('#ai-email');
 const aiChips = $('#ai-chips');
 const aiThread = $('#ai-thread');
@@ -1134,8 +1148,10 @@ const bot = (inner) => say(AV + inner, 'ai-msg');
 aiForm.addEventListener('submit', (e) => {
   e.preventDefault();
   const text = aiText.value.trim();
+  const name = aiName.value.trim();
   const email = aiEmail.value.trim();
   if (!text) { toast('Type something first. We\'re good, not psychic.'); aiText.focus(); return; }
+  if (!name) { toast('A name, please. "Hey you" feels cold.'); aiName.focus(); return; }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     toast('We\'ll need an email to reply to. The pigeon retired.');
     aiEmail.focus();
@@ -1144,15 +1160,16 @@ aiForm.addEventListener('submit', (e) => {
 
   const skills = pickedSkills();
   say(`${skills.length ? `<div class="ai-chips">${skills.map((s) => chip(s)).join('')}</div>` : ''}` +
-    `<p>${esc(text)}</p><small>reply to ${esc(email)}</small>`, 'ai-me');
+    `<p>${esc(text)}</p><small>${esc(name)} · ${esc(email)}</small>`, 'ai-me');
 
   const body = [
+    `Name: ${name}`,
+    `Email: ${email}`,
     skills.length ? `Skills: ${skills.map((s) => s.name).join(', ')}` : '',
-    `Reply to: ${email}`,
     '',
     text,
-  ].filter((l, i) => l || i > 0).join('\n');
-  const href = `mailto:${MAIL}?subject=${encodeURIComponent('New enquiry via the Bamops site')}&body=${encodeURIComponent(body)}`;
+  ].filter((l, i) => l || i > 2).join('\n');
+  const href = `mailto:${MAIL}?subject=${encodeURIComponent(`New enquiry from ${name} via the Bamops site`)}&body=${encodeURIComponent(body)}`;
 
   aiText.value = ''; fit(); syncSend();
   picked.clear(); renderChips();
