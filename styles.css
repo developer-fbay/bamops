@@ -1,10 +1,12 @@
 :root{
-  --bg:#08090a; --panel:#0c0d0f; --panel-2:#0f1113;
-  --line:rgba(255,255,255,.07); --line-2:rgba(255,255,255,.13);
-  --fg:#eceded; --fg-2:#9b9da2; --fg-3:#64666c;
-  --acc:#e8703a; --acc-soft:rgba(232,112,58,.09); --ok:#4ea86b;
-  /* phosphor, for terminal mode */
-  --g-0:#030806; --g-dim:#1b5c31; --g:#36c75f; --g-br:#86ffb2; --g-hi:#d9ffe7;
+  --bg:#000; --bg-2:#0a0a0a; --panel:#111; --panel-2:#181818;
+  --line:rgba(255,255,255,.08); --line-2:rgba(255,255,255,.14);
+  --fg:#f5f5f5; --fg-2:#a1a1a1; --fg-3:#6b6b6b;
+  /* monochrome: the "accent" is just the brightest grey */
+  --acc:#f5f5f5; --acc-soft:rgba(255,255,255,.06); --ok:#4ade80;
+  --redact:#2a2a2a;
+  /* terminal mode, grey on black */
+  --g-0:#000; --g-dim:#555; --g:#a1a1a1; --g-br:#e5e5e5; --g-hi:#fff;
   --sans:'Inter','Helvetica Neue',Arial,sans-serif;
   --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Consolas,monospace;
   --pad:clamp(20px,5vw,64px);
@@ -21,7 +23,7 @@ h1,h2,p,ol,ul,figure{margin:0;padding:0}
 ol,ul{list-style:none}
 a{color:inherit;text-decoration:none}
 :focus-visible{outline:1px solid var(--acc);outline-offset:3px}
-::selection{background:rgba(232,112,58,.3);color:#fff}
+::selection{background:rgba(255,255,255,.22);color:#fff}
 .mono{font-family:var(--mono)}
 .wrap{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding-inline:var(--pad)}
 .lbl{font:500 10.5px/1 var(--mono);letter-spacing:.11em;text-transform:uppercase;color:var(--fg-3)}
@@ -86,7 +88,7 @@ section{padding-block:clamp(60px,9vh,104px)}
 .prev-body svg.on{opacity:1}
 .sch{fill:none;stroke:var(--line-2);stroke-width:1}
 .sch-f{fill:rgba(255,255,255,.045);stroke:none}
-.sch-a{fill:rgba(232,112,58,.5);stroke:none}
+.sch-a{fill:rgba(255,255,255,.32);stroke:none}
 
 /* flow */
 .tabs{display:flex;gap:6px;flex-wrap:wrap;padding-bottom:18px}
@@ -133,11 +135,11 @@ footer a:hover{color:var(--fg-2)}
 /* mode toggle + terminal */
 .mode{position:fixed;z-index:70;top:clamp(12px,2vw,20px);right:clamp(12px,2vw,22px);
   font:400 10.5px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--fg-3);
-  background:rgba(12,13,15,.72);border:1px solid var(--line);border-radius:7px;padding:6px 11px;
+  background:rgba(17,17,17,.72);border:1px solid var(--line);border-radius:7px;padding:6px 11px;
   cursor:pointer;backdrop-filter:blur(8px);transition:color .2s,border-color .2s}
 .mode:hover{color:var(--fg);border-color:var(--line-2)}
-body.term-on .mode{color:var(--g-br);border-color:rgba(54,199,95,.32);background:rgba(3,8,6,.72)}
-body.term-on .mode:hover{color:var(--g-hi);border-color:rgba(54,199,95,.6)}
+body.term-on .mode{color:var(--g-br);border-color:rgba(255,255,255,.18);background:rgba(0,0,0,.72)}
+body.term-on .mode:hover{color:var(--g-hi);border-color:rgba(255,255,255,.4)}
 
 .term{position:fixed;inset:0;z-index:60;display:none;flex-direction:column;
   background:var(--g-0);color:var(--g);font:400 clamp(12px,1.02vw,13.5px)/1.7 var(--mono)}
@@ -145,36 +147,36 @@ body.term-on{overflow:hidden}
 body.term-on .term{display:flex}
 body.term-on main,body.term-on .rail{display:none}
 body.term-on :focus-visible{outline-color:var(--g-br)}
-.term ::selection{background:rgba(54,199,95,.28);color:var(--g-hi)}
-/* phosphor: scanlines over a soft bloom, painted above both children */
+.term ::selection{background:rgba(255,255,255,.22);color:var(--g-hi)}
+/* faint scanlines over a soft top light, painted above both children */
 .term::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;background:
-  radial-gradient(125% 90% at 50% 0%,rgba(54,199,95,.05),transparent 62%),
-  repeating-linear-gradient(rgba(0,0,0,0) 0 2px,rgba(0,0,0,.15) 2px 4px)}
+  radial-gradient(125% 90% at 50% 0%,rgba(255,255,255,.035),transparent 62%),
+  repeating-linear-gradient(rgba(0,0,0,0) 0 2px,rgba(0,0,0,.1) 2px 4px)}
 /* Stable gutter so the column count is measured against the width the text will really get:
    the scrollbar only arrives once the document has filled, which is after the maths. */
 .term-out{position:relative;z-index:1;flex:1;overflow-y:auto;scrollbar-gutter:stable;
   white-space:pre-wrap;word-break:break-word;
-  padding:clamp(20px,3.4vw,38px) clamp(16px,3vw,34px) 10px;text-shadow:0 0 9px rgba(54,199,95,.3)}
+  padding:clamp(20px,3.4vw,38px) clamp(16px,3vw,34px) 10px;text-shadow:0 0 9px rgba(255,255,255,.08)}
 /* Blank lines are empty divs, which would otherwise collapse to nothing. */
 .term-out .ln{min-height:1.7em}
 .term-out b{color:var(--g-hi);font-weight:500}
 .term-out i,.term-out .fr{color:var(--g-dim);font-style:normal}
 .term-out em{color:var(--g-br);font-style:normal}
 .term-out .pr,.term-out .ok{color:var(--g-br)}
-.term-out a{color:var(--g-br);border-bottom:1px solid rgba(134,255,178,.38)}
+.term-out a{color:var(--g-br);border-bottom:1px solid rgba(255,255,255,.3)}
 .term-out a:hover{color:var(--g-hi);border-color:var(--g-hi)}
 .term-out .cur{display:inline-block;width:.56em;height:1.02em;vertical-align:-.16em;
-  background:var(--g-br);box-shadow:0 0 10px rgba(134,255,178,.45)}
+  background:var(--g-br);box-shadow:0 0 10px rgba(255,255,255,.25)}
 /* The document is one centred block of a fixed measure, so every line still shares a left
    edge; centring the lines themselves would leave the whole thing ragged. The width comes
    from the column count measured when the document is built. */
 .term-doc,.term-row{width:var(--doc-w,74ch);max-width:100%;margin:0 auto}
 /* The reserved scrollbar gutter narrows the output's content box, so the prompt has to give
    up the same width or the two would centre against different widths and sit a cell apart. */
-.term-form{border-top:1px solid rgba(54,199,95,.2);
+.term-form{border-top:1px solid rgba(255,255,255,.1);
   padding:9px calc(clamp(16px,3vw,34px) + var(--gutter,0px)) clamp(14px,2.4vw,24px) clamp(16px,3vw,34px)}
 .term-row{display:flex;align-items:baseline;gap:9px}
-.term-form label{color:var(--g-br);white-space:nowrap;text-shadow:0 0 9px rgba(54,199,95,.3)}
+.term-form label{color:var(--g-br);white-space:nowrap;text-shadow:0 0 9px rgba(255,255,255,.08)}
 .term-form input{flex:1;min-width:0;padding:0;background:none;border:0;outline:none;
   color:var(--g-hi);font:inherit;caret-color:var(--g-br)}
 

@@ -9,10 +9,10 @@ Tick off as we go.
 - [ ] Answer open questions in `brief.md` with the CEO
 
 ## Phase 1 — Foundation
-- [ ] **T1. Codex palette swap** — replace colour tokens with the monochrome
+- [x] **T1. Codex palette swap** — replace colour tokens with the monochrome
       set in `design.md`, drop orange accent, regrey the grid and terminal mode.
       Quick, visible win; everything after builds on it.
-- [ ] **T2. Split the file** — move CSS and JS out of `index.html` into
+- [x] **T2. Split the file** — move CSS and JS out of `index.html` into
       `styles.css` / `main.js`. Easier to work on as the site grows.
 - [ ] **T3. Remove live links & hostnames** from the systems list (the
       "tease, don't tell" rule).

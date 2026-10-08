@@ -951,7 +951,7 @@ document.addEventListener('visibilitychange', () => {
   document.title = document.hidden ? 'BAMOPS — take your time' : TITLE;
 });
 
-console.log('%cBAMOPS', 'font:600 26px/1.4 system-ui;color:#e8703a');
+console.log('%cBAMOPS', 'font:600 26px/1.4 system-ui;color:#f5f5f5');
 console.log('%cYou opened the console. Nosy. We approve.', 'color:#9b9da2;font:13px/1.6 ui-monospace,monospace');
 console.log('%cNo framework, no build step. Terribly sorry about the JavaScript.', 'color:#64666c;font:13px/1.6 ui-monospace,monospace');
 console.log('%ccontact@bamops.co.uk — do mention you looked.', 'color:#9b9da2;font:13px/1.6 ui-monospace,monospace');
