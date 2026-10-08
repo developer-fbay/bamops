@@ -148,6 +148,7 @@ section{padding-block:clamp(60px,9vh,104px)}
 .canvas-foot .ok{color:var(--ok)}
 
 /* contact */
+#contact{padding-top:clamp(84px,12vh,136px)}
 .reach{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,620px);gap:clamp(28px,5vw,64px);align-items:start;padding-bottom:10px}
 .contact{display:flex;flex-direction:column;align-items:flex-start;gap:22px}
 .contact p{font:400 clamp(19px,2.6vw,30px) var(--sans);letter-spacing:-.025em;color:#f2f2f3;max-width:16ch}
