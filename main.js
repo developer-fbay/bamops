@@ -776,7 +776,7 @@ function buildDoc() {
   gap();
 
   /* masthead */
-  ops.push({ html: '<img class="term-logo" src="assets/bamops-mark-for-dark-bg.svg" alt="Bamops" width="30" height="38">' });
+  ops.push({ html: '<img class="term-logo" src="assets/bamops-mark-for-dark-bg.svg" alt="Bamops" width="38" height="48">' });
   gap();
   const sub = $('.hero .lbl').textContent.toLowerCase();
   if (narrow) {
