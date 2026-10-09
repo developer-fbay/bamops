@@ -332,7 +332,7 @@ if (MOTION) { toggleEl.innerHTML = PAUSE; toggleEl.setAttribute('aria-label', 'P
 run();
 
 /* ---------- headline ---------- */
-const PHRASES = ['Quietly load-bearing', 'Boringly reliable', 'Suspiciously calm', 'Mostly automated', 'Still standing'];
+const PHRASES = ['Quietly load-bearing', 'Boringly reliable', 'Suspiciously calm', 'Mostly automated', 'I\'m still standing'];
 const typeEl = $('#type');
 const caretEl = $('#caret');
 
