@@ -36,13 +36,17 @@ cheeky footnote. **No URLs, hostnames, client names or screenshots** (pending
 sign-off — see open questions in `brief.md`).
 
 ### case_01 — "The Brain"
-- Sector: finance · deal management
-- Problem: Deals lived in inboxes, spreadsheets and one person's memory.
-  When that person went on holiday, so did the pipeline.
-- Fix: A single operating system for every deal — intake to payout — that
-  remembers everything and nags people politely.
-- Result: One source of truth. Holidays are allowed again.
-- Footnote: "Named accurately."
+- Sector: finance · broker ops
+- What it is: lets a broker send applications to lenders through their APIs,
+  broker portals or email, all managed in one place. One submit button
+  packages each application the way that lender prefers.
+- Problem: Every lender wanted applications their own way: an API here, a
+  broker portal there, an email with the attachments named just so. Brokers
+  spent their days retyping the same deal.
+- Fix: Every application managed in one place. Press submit and it packages
+  the deal the way each lender prefers, then sends it by API, portal or email.
+- Result: One button, every lender. Nobody retypes a deal any more.
+- Footnote: "It knows which lender wants a PDF. Nobody knows why."
 
 ### case_02 — "Comparison engine"
 - Sector: fintech · lead gen
@@ -115,4 +119,4 @@ Keep the existing flows (`enquiry.intake`, `lender.match`, `booking.ops`,
 
 ## 7. Footer
 
-`London · Cape Town` · `Shipped on a Friday.` · `© 2026 Bamops`
+`London · Cape Town` · `Plan, build, deploy and on to the next.` · `© 2026 Bamops`

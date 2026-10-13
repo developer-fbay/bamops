@@ -175,6 +175,49 @@ a {
   color: var(--fg-2);
 }
 
+/* cursor spotlight (spotlight.js adds the layer) */
+.spot {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s;
+  background: radial-gradient(
+    560px circle at var(--mx) var(--my),
+    color-mix(in srgb, var(--acc) 7%, transparent),
+    transparent 75%
+  );
+}
+.spot.on {
+  opacity: 1;
+}
+/* second layer: white in "overlay" blend mode. Black stays black, but grey and white text
+   under the pointer is pushed toward white, so the words light up as well as the glow. */
+.spot-lit {
+  position: fixed;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s;
+  mix-blend-mode: overlay;
+  background: radial-gradient(
+    300px circle at var(--mx) var(--my),
+    rgba(255, 255, 255, 0.7),
+    transparent 100%
+  );
+}
+.spot-lit.on {
+  opacity: 1;
+}
+body.term-on .spot,
+body.term-on .spot-lit,
+body.menu-on .spot,
+body.menu-on .spot-lit {
+  display: none;
+}
+
 /* hero */
 .hero {
   position: relative;
@@ -237,14 +280,6 @@ a {
 .hero-art {
   position: relative;
   margin: 0;
-}
-.hero-art::before {
-  content: "";
-  position: absolute;
-  inset: -12% -22% -12% -10%;
-  z-index: -1;
-  background: radial-gradient(closest-side, color-mix(in srgb, var(--acc) 9%, transparent), transparent);
-  pointer-events: none;
 }
 .hero-art svg {
   display: block;
@@ -1290,10 +1325,7 @@ footer {
 footer span:last-child {
   margin-left: auto;
 }
-footer a {
-  transition: color 0.2s;
-}
-footer a:hover {
+footer .slogan {
   color: var(--fg);
 }
 
@@ -1595,7 +1627,6 @@ body.term-on :focus-visible {
   height: 1.02em;
   vertical-align: -0.16em;
   background: var(--acc);
-  box-shadow: 0 0 10px color-mix(in srgb, var(--acc) 35%, transparent);
 }
 /* The document is one centred block of a fixed measure, so every line still shares a left
    edge; centring the lines themselves would leave the whole thing ragged. The width comes
@@ -1621,7 +1652,6 @@ body.term-on :focus-visible {
 .term-form label {
   color: var(--acc);
   white-space: nowrap;
-  text-shadow: 0 0 9px color-mix(in srgb, var(--acc) 15%, transparent);
 }
 .term-form input {
   flex: 1;
@@ -1710,7 +1740,6 @@ body.term-on :focus-visible {
     height: 6px;
     border-radius: 50%;
     background: var(--acc);
-    box-shadow: 0 0 8px color-mix(in srgb, var(--acc) 60%, transparent);
   }
   .wu-body {
     padding: 16px 16px 14px;

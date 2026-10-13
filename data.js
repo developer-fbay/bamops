@@ -8,12 +8,12 @@
 // TODO: confirm the `main` pick for each case (only The Brain and Room Booking are certain).
 // `flow` is the id of the workflow drawn on that case's page (see CASE_FLOWS below).
 const CASES = [
-  { slug: 'the-brain', name: 'The Brain', sector: 'finance · deal management', note: 'deal os. it thinks.', tag: 'vue · supabase', sch: 'app', client: 11,
-    main: { name: 'supabase', icon: 'supabase' }, flow: 'enquiry.intake',
-    problem: 'Deals lived in inboxes, spreadsheets and one person\'s memory. When that person went on holiday, so did the pipeline.',
-    fix: 'One operating system for every deal, intake to payout. It remembers everything and nags people politely.',
-    result: 'One source of truth. Holidays are allowed again.',
-    quip: 'Named accurately.' },
+  { slug: 'the-brain', name: 'The Brain', sector: 'finance · broker ops', note: 'one button. every lender.', tag: 'vue · supabase', sch: 'app', client: 11,
+    main: { name: 'supabase', icon: 'supabase' }, flow: 'application.submit',
+    problem: 'Every lender wanted applications their own way:  a broker portal here, an email with the attachments there. Brokers spent their days retyping the same deal.',
+    fix: 'Every application managed in one place. Press submit and it packages the deal the way each lender prefers, then sends it by API, portal or email.',
+    result: 'One button, every lender. Nobody retypes a deal any more.',
+    quip: 'It knows which lender wants a PDF. Nobody knows why.' },
   { slug: 'comparison-engine', name: 'Comparison Engine', sector: 'fintech · lead gen', note: '95% right, 100% certain.', tag: '30+ sources', sch: 'form', client: 9,
     main: { name: 'postgres', icon: 'postgres' }, flow: 'lender.match',
     problem: 'Matching a business to the right funder meant hours of phone calls and a lot of gut feel.',
@@ -100,6 +100,14 @@ const QUIPS = {
 // TODO: placeholder steps for those two until the real projects are described.
 const CASE_FLOWS = [
   ...FLOWS.filter((f) => f.id !== 'friday.deploy'),
+  { id: 'application.submit', nodes: [
+      { id: 'submit', c: 0, r: 0, k: 'trigger', nm: 'Submit', sb: 'one button' },
+      { id: 'rules', c: 1, r: 0, k: 'code', nm: 'Lender rules', sb: 'per lender' },
+      { id: 'pack', c: 2, r: 0, k: 'doc', nm: 'Package', sb: 'their format' },
+      { id: 'route', c: 3, r: 0, k: 'branch', nm: 'Channel', sb: 'if' },
+      { id: 'api', c: 4, r: -.62, k: 'http', nm: 'Lender API', sb: 'direct' },
+      { id: 'send', c: 4, r: .62, k: 'mail', nm: 'Portal / email', sb: 'auto-filled' },
+    ], edges: [['submit', 'rules'], ['rules', 'pack'], ['pack', 'route'], ['route', 'api', 'api'], ['route', 'send', 'no api']] },
   { id: 'partner.payout', nodes: [
       { id: 'ref', c: 0, r: 0, k: 'trigger', nm: 'Referral', sb: 'portal' },
       { id: 'dedupe', c: 1, r: 0, k: 'code', nm: 'Dedupe', sb: 'rules' },
