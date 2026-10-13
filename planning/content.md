@@ -119,4 +119,4 @@ Keep the existing flows (`enquiry.intake`, `lender.match`, `booking.ops`,
 
 ## 7. Footer
 
-`London · Cape Town` · `Plan, build, deploy and on to the next.` · `© 2026 Bamops`
+`London · Cape Town` · `We build what the firm runs on. So far, it has held.` · `© 2026 Bamops`
